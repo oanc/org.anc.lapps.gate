@@ -1,6 +1,19 @@
 *.class
+*.log
 
 # Package Files #
 *.jar
 *.war
 *.ear
+
+# Maven's build directory
+target
+
+# Eclipse
+.project
+.classpath
+.settings
+
+# IntelliJ
+.idea
+*.iml
