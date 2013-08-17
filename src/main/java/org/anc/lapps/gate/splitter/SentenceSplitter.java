@@ -12,11 +12,11 @@ public class SentenceSplitter extends GateService
    
    public long[] requires()
    {
-      return new long[] { Types.GATE_DOCUMENT };
+      return new long[] { Types.GATE };
    }
    
    public long[] produces()
    {
-      return new long[] { Types.GATE_DOCUMENT, Types.GATE_SENTENCE_ANNOTAION };
+      return new long[] { Types.GATE, Types.SENTENCE };
    }
 }

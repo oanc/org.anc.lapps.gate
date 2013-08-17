@@ -14,8 +14,8 @@ public class Tokenizer extends GateService
    public long[] requires()
    {
       return new long[] {
-        Types.GATE_DOCUMENT,
-        Types.GATE_SENTENCE_ANNOTAION
+        Types.GATE,
+        Types.SENTENCE
       };
    }
 
@@ -23,9 +23,9 @@ public class Tokenizer extends GateService
    public long[] produces()
    {
       return new long[] {
-            Types.GATE_DOCUMENT,
-            Types.GATE_SENTENCE_ANNOTAION,
-            Types.GATE_TOKEN_ANNOTATION
+            Types.GATE,
+            Types.SENTENCE,
+            Types.TOKEN
       };
    }
 }

@@ -14,19 +14,19 @@ public class Tagger extends GateService
    public long[] requires()
    {
       return new long[] {
-            Types.GATE_DOCUMENT,
-            Types.GATE_SENTENCE_ANNOTAION,
-            Types.GATE_TOKEN_ANNOTATION
+            Types.GATE,
+            Types.SENTENCE,
+            Types.TOKEN
       };
    }
    
    public long[] produces()
    {
       return new long[] {
-            Types.GATE_DOCUMENT,
-            Types.GATE_SENTENCE_ANNOTAION,
-            Types.GATE_TOKEN_ANNOTATION,
-            Types.GATE_POS_ANNOTATION
+            Types.GATE,
+            Types.SENTENCE,
+            Types.TOKEN,
+            Types.POS
          };      
    }
 }
