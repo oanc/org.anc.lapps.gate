@@ -38,38 +38,48 @@ public abstract class GateService implements WebService
    protected Exception savedException;
    protected final String name;
 
+   private static boolean initialized = false;
+
    public GateService(String gateResourceName)
    {
-      name = gateResourceName;
-      try
+      logger.info("GateService constructor for {}.", gateResourceName);
+      this.name = gateResourceName;
+      if (!initialized)
       {
-         logger.debug("Creating GATE resource {}.", name);
-         File gateHome = new File(K.GATE_HOME);
-         File plugins = new File(gateHome, "plugins");
-         Gate.setSiteConfigFile(new File(K.SITE_CONFIG));
-         Gate.setGateHome(gateHome);
-         Gate.setPluginsHome(plugins);
-      }
-      catch (Exception e)
-      {
-         logger.error("Unable to configure GATE.", e);
+         initialized = true;
+         try
+         {
+            File gateHome = new File(K.GATE_HOME);
+            File plugins = new File(gateHome, "plugins");
+            Gate.setSiteConfigFile(new File(K.SITE_CONFIG));
+            Gate.setGateHome(gateHome);
+            Gate.setPluginsHome(plugins);
+         }
+         catch (Exception e)
+         {
+   //         logger.error("Unable to configure GATE.", e);
+            logger.warn(e.getMessage());
+         }
+
+         try
+         {
+            logger.info("Initializing GATE");
+            Gate.init();
+         }
+         catch (Exception e)
+         {
+   //         logger.error("Error initializing GATE.", e);
+            logger.warn(e.getMessage());
+            savedException = e;
+   //         return;
+         }
       }
 
       try
       {
-         logger.debug("Initializing GATE");
-         Gate.init();
-      }
-      catch (Exception e)
-      {
-         logger.error("Error initializing GATE.", e);
-         savedException = e;
-         return;
-      }
-
-      try
-      {
+         logger.info("Creating resource {}", gateResourceName);
          resource = (AbstractLanguageAnalyser) Factory.createResource(gateResourceName);
+         logger.info("Resource created.");
 //         logger.debug("Initializing worker pool. Size: " + K.POOL_SIZE);
 //         pool = new ArrayBlockingQueue<AbstractLanguageAnalyser>(K.POOL_SIZE);
 //         for (int i = 0; i < K.POOL_SIZE; ++i)
@@ -97,6 +107,7 @@ public abstract class GateService implements WebService
       logger.debug("Executing {}", name);
       if (savedException != null)
       {
+         logger.warn("Returning saved exception: " + savedException.getMessage());
          return new Data(Types.ERROR, savedException.getMessage());
       }
       
@@ -107,7 +118,7 @@ public abstract class GateService implements WebService
       }
       catch (InternalException e)
       {
-         // TODO This error should be logged.
+         logger.error("Internal exception.", e);
          return new Data(Types.ERROR, e.getMessage());
       }
 
@@ -115,19 +126,21 @@ public abstract class GateService implements WebService
       try
       {
 //         resource = pool.take();
+         logger.info("Executing resource {}", name);
          resource.setDocument(doc);
          resource.execute();
       }
       catch (Exception e)
       {
-         logger.error("Error running GATE resource.", e);
+         logger.error("Error running GATE resource {}", name, e);
          return new Data(Types.ERROR, e.getMessage());
       }
       finally
       {
 //         pool.add(resource);
       }
-      return new Data(Types.DOCUMENT, doc.toXml());
+      logger.info("Execution complete.");
+      return new Data(Types.GATE, doc.toXml());
    }
 
 //   public void destroy()
@@ -143,17 +156,25 @@ public abstract class GateService implements WebService
       Document doc = null;
       try
       {
-         if (input.getDiscriminator() == Types.TEXT)
+         long type = input.getDiscriminator();
+         if (type == Types.TEXT)
          {
+            logger.info("Creating document from text.");
             doc = Factory.newDocument(input.getPayload());
          }
-         else if (input.getDiscriminator() == Types.DOCUMENT)
+         else if (type == Types.GATE)
          {
+            logger.info("Creating document from GATE document.");
             doc = (Document) 
                   Factory.createResource("gate.corpora.DocumentImpl", 
                     Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME, 
                   input.getPayload(), 
                   gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml")); 
+         }
+         else
+         {
+            String name = DiscriminatorRegistry.get(type);
+            throw new InternalException("Unknown document type : " + name);
          }
       }
       catch (ResourceInstantiationException ex)
