@@ -1,9 +1,10 @@
 package org.anc.lapps.gate.tagger;
 
-import org.anc.lapps.gate.GateService;
+import org.anc.lapps.gate.PooledGateService;
+import org.anc.lapps.gate.SimpleGateService;
 import org.lappsgrid.discriminator.Types;
 
-public class Tagger extends GateService
+public class Tagger extends SimpleGateService
 {
 
    public Tagger()

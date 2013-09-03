@@ -1,11 +1,12 @@
 package org.anc.lapps.gate.splitter;
 
-import org.anc.lapps.gate.GateService;
+import org.anc.lapps.gate.PooledGateService;
+import org.anc.lapps.gate.SimpleGateService;
 import org.lappsgrid.discriminator.Types;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SentenceSplitter extends GateService
+public class SentenceSplitter extends SimpleGateService
 {
    protected static final Logger logger = LoggerFactory.getLogger(SentenceSplitter.class);
    public SentenceSplitter()

@@ -1,9 +1,10 @@
 package org.anc.lapps.gate.tokenizer;
 
-import org.anc.lapps.gate.GateService;
+import org.anc.lapps.gate.PooledGateService;
+import org.anc.lapps.gate.SimpleGateService;
 import org.lappsgrid.discriminator.Types;
 
-public class Tokenizer extends GateService
+public class Tokenizer extends SimpleGateService
 {
    public Tokenizer()
    {

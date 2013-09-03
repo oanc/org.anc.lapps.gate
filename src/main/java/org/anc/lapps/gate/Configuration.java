@@ -9,17 +9,27 @@ import java.io.IOException;
  */
 public class Configuration extends Constants
 {
-   @Default("/Applications/Gate-7.0")
-   public final String GATE_HOME = null;
+//   @Default("/Applications/Gate-7.0")
+//   public final String GATE_HOME = null;
 
 //   @Default("/Applications/Gate-7.0/plugins")
 //   public final String GATE_PLUGINS = null;
 //
-   @Default("/Users/suderman/.gate.xml")
+
+   @Default("/usr/share/tomcat/service_grid/webapps/GateServices/WEB-INF")
+   public final String GATE_HOME = null;
+
+   @Default("/usr/share/tomcat/service_grid/webapps/GateServices/WEB-INF")
+   public final String PLUGINS_HOME = null;
+
+   @Default("/usr/share/tomcat/service_grid/webapps/GateServices/WEB-INF/gate.xml")
    public final String SITE_CONFIG = null;
 
-   @Default("4")
-   public final int POOL_SIZE = 0;
+   @Default("/usr/share/tomcat/service_grid/webapps/GateServices/WEB-INF/user-gate.xml")
+   public final String USER_CONFIG = null;
+
+   @Default("8")
+   public final Integer POOL_SIZE = null;
 
    public Configuration()
    {

@@ -1,8 +1,15 @@
 package org.anc.lapps.gate;
 
+import org.anc.grid.data.masc.client.DataSourceClient;
+import org.anc.io.UTF8Writer;
 import org.anc.lapps.gate.splitter.SentenceSplitter;
 import org.anc.lapps.gate.tagger.Tagger;
 import org.anc.lapps.gate.tokenizer.Tokenizer;
+import org.junit.Test;
+import org.lappsgrid.api.*;
+
+import javax.xml.rpc.ServiceException;
+import java.io.*;
 
 
 public class GateDriver
@@ -12,12 +19,44 @@ public class GateDriver
    {
    }
 
-   public void run()
+   @Test
+   public void run() throws ServiceException, InternalException, IOException
    {
+      File destination = new File("/tmp/gate");
+      if (!destination.exists())
+      {
+         if (!destination.mkdirs())
+         {
+            System.out.println("Unable to create destination directory.");
+            return;
+         }
+      }
+
       SentenceSplitter splitter = new SentenceSplitter();
       Tokenizer tokenizer = new Tokenizer();
       Tagger tagger = new Tagger();
-      
+
+      String url = "http://localhost:8080/service_manager/invoker/lapps:MASC_TEXT";
+      String username = "operator1";
+      String password = "operator1";
+      DataSourceClient masc = new DataSourceClient(url, username, password);
+      String[] keys = masc.list();
+      for (String key : keys)
+      {
+         System.out.println("Processing " + key);
+         Data data = masc.get(key);
+         System.out.println("   splitting");
+         data = splitter.execute(data);
+         System.out.println("   tokenizing");
+         data = tokenizer.execute(data);
+         System.out.println("   tagging");
+         data = tagger.execute(data);
+         File outputFile = new File(destination, key + ".xml");
+         UTF8Writer writer = new UTF8Writer(outputFile);
+         writer.write(data.getPayload());
+         writer.close();
+         System.out.println();
+      }
 //      DataSourceReader reader = new DataSourceReader();
 //      
 //      String text = reader.next();
@@ -32,8 +71,15 @@ public class GateDriver
 //      System.out.println(data.getPayload());
    }
    
-   public static void main(String[] args)
-   {
-      new GateDriver().run();
-   }
+//   public static void main(String[] args)
+//   {
+//      try
+//      {
+//         new GateDriver().run();
+//      }
+//      catch (Exception e)
+//      {
+//         e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//      }
+//   }
 }

@@ -18,10 +18,8 @@
 		<file>change-me.log</file>
 	</appender>
 
-	<logger name="org.anc" level="info">
-		<appender-ref ref="STDOUT"/>
-	</logger>
-	
+	<logger name="org.anc" level="debug"/>
+
 	<root level="info">
 		<appender-ref ref="STDOUT" />
 		<!-- <appender-ref ref="FILE"/>  -->
