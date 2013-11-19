@@ -4,7 +4,7 @@
   <bean id="target" class="jp.go.nict.langrid.servicecontainer.handler.TargetServiceFactory" >
     <property name="service">
       <!-- This is the ONLY thing that should be changed. -->
-      <bean class="org.anc.lapps.gate.splitter.SentenceSplitter" />
+      <bean class="org.anc.lapps.gate.SentenceSplitter" />
     </property>
   </bean>
 </beans>

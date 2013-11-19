@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
  */
 public abstract class SimpleGateService implements WebService
 {
-   public static final Logger logger = LoggerFactory.getLogger(PooledGateService.class);
+   public static final Logger logger = LoggerFactory.getLogger(SimpleGateService.class);
    public static final Configuration K = new Configuration();
 
    protected AbstractLanguageAnalyser resource;
@@ -38,7 +38,7 @@ public abstract class SimpleGateService implements WebService
       this.name = gateResourceName;
       if (!initialized)
       {
-         initialized = true;
+         initialized = true;  // We only try this once.
          try
          {
             logger.info("Configuring Gate.");
@@ -57,7 +57,7 @@ public abstract class SimpleGateService implements WebService
                savedException = new FileNotFoundException(K.PLUGINS_HOME);
                return;
             }
-            logger.info("Plugins home:s {}", K.PLUGINS_HOME);
+            logger.info("Plugins home: {}", K.PLUGINS_HOME);
             File siteConfig = new File(K.SITE_CONFIG);
             if (!siteConfig.exists())
             {

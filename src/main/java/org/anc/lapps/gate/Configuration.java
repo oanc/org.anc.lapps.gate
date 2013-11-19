@@ -16,16 +16,16 @@ public class Configuration extends Constants
 //   public final String GATE_PLUGINS = null;
 //
 
-   @Default("/usr/share/tomcat/service_grid/webapps/GateServices/WEB-INF")
+   @Default("/usr/share/tomcat/service-grid/webapps/GateServices/WEB-INF")
    public final String GATE_HOME = null;
 
-   @Default("/usr/share/tomcat/service_grid/webapps/GateServices/WEB-INF")
+   @Default("/usr/share/tomcat/service-grid/webapps/GateServices/WEB-INF")
    public final String PLUGINS_HOME = null;
 
-   @Default("/usr/share/tomcat/service_grid/webapps/GateServices/WEB-INF/gate.xml")
+   @Default("/usr/share/tomcat/service-grid/webapps/GateServices/WEB-INF/gate.xml")
    public final String SITE_CONFIG = null;
 
-   @Default("/usr/share/tomcat/service_grid/webapps/GateServices/WEB-INF/user-gate.xml")
+   @Default("/usr/share/tomcat/service-grid/webapps/GateServices/WEB-INF/user-gate.xml")
    public final String USER_CONFIG = null;
 
    @Default("8")

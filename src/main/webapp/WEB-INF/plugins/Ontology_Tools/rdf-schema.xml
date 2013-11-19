@@ -101,9 +101,9 @@
   <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
 </rdfs:Class>
 
-<rdfs:Class rdf:about="http://www.w3.org/2000/01/rdf-schema#Container">
+<rdfs:Class rdf:about="http://www.w3.org/2000/01/rdf-schema#org.anc.lapps.serialization.Container">
   <rdfs:isDefinedBy rdf:resource="http://www.w3.org/2000/01/rdf-schema#"/>
-  <rdfs:label>Container</rdfs:label>
+  <rdfs:label>org.anc.lapps.serialization.Container</rdfs:label>
   <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
   <rdfs:comment>The class of RDF containers.</rdfs:comment>
 

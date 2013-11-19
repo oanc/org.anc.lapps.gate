@@ -1,4 +1,4 @@
-package org.anc.lapps.gate.tagger;
+package org.anc.lapps.gate;
 
 import org.anc.lapps.gate.PooledGateService;
 import org.anc.lapps.gate.SimpleGateService;
@@ -6,7 +6,6 @@ import org.lappsgrid.discriminator.Types;
 
 public class Tagger extends SimpleGateService
 {
-
    public Tagger()
    {
       super("gate.creole.POSTagger");
@@ -15,8 +14,8 @@ public class Tagger extends SimpleGateService
    public long[] requires()
    {
       return new long[] {
-            Types.GATE,
-            Types.SENTENCE,
+//            Types.GATE,
+//            Types.SENTENCE,
             Types.TOKEN
       };
    }
@@ -24,9 +23,9 @@ public class Tagger extends SimpleGateService
    public long[] produces()
    {
       return new long[] {
-            Types.GATE,
-            Types.SENTENCE,
-            Types.TOKEN,
+//            Types.GATE,
+//            Types.SENTENCE,
+//            Types.TOKEN,
             Types.POS
          };      
    }

@@ -1,4 +1,4 @@
-package org.anc.lapps.gate.tokenizer;
+package org.anc.lapps.gate;
 
 import org.anc.lapps.gate.PooledGateService;
 import org.anc.lapps.gate.SimpleGateService;

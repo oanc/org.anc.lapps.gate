@@ -2,9 +2,6 @@ package org.anc.lapps.gate;
 
 import org.anc.grid.data.masc.client.DataSourceClient;
 import org.anc.io.UTF8Writer;
-import org.anc.lapps.gate.splitter.SentenceSplitter;
-import org.anc.lapps.gate.tagger.Tagger;
-import org.anc.lapps.gate.tokenizer.Tokenizer;
 import org.junit.Test;
 import org.lappsgrid.api.*;
 

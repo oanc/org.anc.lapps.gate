@@ -1,7 +1,5 @@
-package org.anc.lapps.gate.splitter;
+package org.anc.lapps.gate;
 
-import org.anc.lapps.gate.PooledGateService;
-import org.anc.lapps.gate.SimpleGateService;
 import org.lappsgrid.discriminator.Types;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +22,6 @@ public class SentenceSplitter extends SimpleGateService
    public long[] produces()
    {
       logger.info("Called produces.");
-      return new long[] { Types.GATE, Types.SENTENCE };
+      return new long[] { Types.SENTENCE };
    }
 }
