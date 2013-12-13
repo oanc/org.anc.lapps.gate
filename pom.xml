@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.anc.lapps</groupId>
     <artifactId>gate</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>Tools: GATE</name>
+    <version>1.1.0</version>
+    <name>Services: GATE</name>
     <description>GATE processing resources wrapped as LAPPS services.</description>
     <packaging>war</packaging>
     <parent>
@@ -21,7 +21,7 @@
         <lapps.version>1.0.1</lapps.version>
     </properties>
     <build>
-        <finalName>GateServices-${project.version}</finalName>
+        <finalName>GateServices#${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -49,7 +49,7 @@
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>discriminator</artifactId>
-            <version>1.2.1-SNAPSHOT</version>
+            <version>1.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
@@ -74,9 +74,15 @@
         <dependency>
             <groupId>org.anc.lapps.masc.client</groupId>
             <artifactId>masc-soap-client</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.anc.lapps</groupId>
+            <artifactId>serialization</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
         <!-- javamelody-core -->
         <dependency>
             <groupId>net.bull.javamelody</groupId>
