@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.anc.lapps</groupId>
             <artifactId>serialization</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>0.10.0</version>
         </dependency>
 
         <!-- javamelody-core -->
