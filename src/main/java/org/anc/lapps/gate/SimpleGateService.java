@@ -12,6 +12,7 @@ import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.DiscriminatorRegistry;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.vocabulary.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -166,6 +167,7 @@ public abstract class SimpleGateService implements WebService
          logger.info("Executing resource {}", name);
          resource.setDocument(doc);
          resource.execute();
+         doc.getFeatures().put(Metadata.PRODUCED_BY, "GATE:" + name);
          result = new Data(Types.GATE, doc.toXml());
       }
       catch (Exception e)
