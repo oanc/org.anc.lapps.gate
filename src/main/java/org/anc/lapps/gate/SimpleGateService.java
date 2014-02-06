@@ -124,6 +124,13 @@ public abstract class SimpleGateService implements WebService
       }
    }
 
+   // TODO: Calculate the proper service ID based on the fully qualified
+   // class name and version number
+   public String getServiceId()
+   {
+      return this.getClass().getCanonicalName() + ":" + Version.getVersion();
+   }
+
    @Override
    public Data configure(Data config)
    {
