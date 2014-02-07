@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * @author Keith Suderman
@@ -145,7 +147,7 @@ public abstract class SimpleGateService implements WebService
       if (savedException != null)
       {
          logger.warn("Returning saved exception: " + savedException.getMessage());
-         return new Data(Types.ERROR, savedException.getMessage());
+         return new Data(Types.ERROR, getStackTrace(savedException));
       }
 
       Document doc;
@@ -156,7 +158,7 @@ public abstract class SimpleGateService implements WebService
       catch (InternalException e)
       {
          logger.error("Internal exception.", e);
-         return new Data(Types.ERROR, e.getMessage());
+         return new Data(Types.ERROR, getStackTrace(e));
       }
 
       Data result = null;
@@ -173,7 +175,7 @@ public abstract class SimpleGateService implements WebService
       catch (Exception e)
       {
          logger.error("Error running GATE resource {}", name, e);
-         return new Data(Types.ERROR, e.getMessage());
+         return new Data(Types.ERROR, getStackTrace(e));
       }
       finally
       {
@@ -214,5 +216,13 @@ public abstract class SimpleGateService implements WebService
          throw new InternalException("Unable to parse Gate document", ex);
       }
       return doc;
+   }
+
+   private String getStackTrace(Throwable t)
+   {
+      StringWriter stringWriter = new StringWriter();
+      PrintWriter printWriter = new PrintWriter(stringWriter);
+      t.printStackTrace(printWriter);
+      return stringWriter.toString();
    }
 }
