@@ -93,14 +93,12 @@
             <artifactId>common</artifactId>
             <version>3.2.0</version>
         </dependency>
-        <!--
         <dependency>
-            <groupId>org.anc.lapps.masc.client</groupId>
-            <artifactId>masc-soap-client</artifactId>
-            <version>1.0.0</version>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>client</artifactId>
+            <version>1.0.3</version>
             <scope>test</scope>
         </dependency>
-        -->
         <dependency>
             <groupId>org.anc.lapps</groupId>
             <artifactId>serialization</artifactId>

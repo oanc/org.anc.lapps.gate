@@ -20,7 +20,7 @@ public class Configuration extends Constants
    public final String GATE_HOME = null;
 
    // TODO Should this be /usr/share/gate/plugins?
-   @Default("/usr/share/gate")
+   @Default("/usr/share/gate/plugins")
    public final String PLUGINS_HOME = null;
 
    @Default("/usr/share/gate/gate.xml")
