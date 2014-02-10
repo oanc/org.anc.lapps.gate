@@ -9,7 +9,8 @@ public class Coreferencer extends SimpleGateService
 {
    public Coreferencer()
    {
-      super("gate.creole.coref.Coreferencer");
+      super();
+      createResource("gate.creole.coref.Coreferencer");
    }
 
    public long[] produces()

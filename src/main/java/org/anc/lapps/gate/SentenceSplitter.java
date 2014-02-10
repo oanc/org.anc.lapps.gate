@@ -9,7 +9,8 @@ public class SentenceSplitter extends SimpleGateService
    protected static final Logger logger = LoggerFactory.getLogger(SentenceSplitter.class);
    public SentenceSplitter()
    {
-      super("gate.creole.splitter.SentenceSplitter");
+      super();
+      createResource("gate.creole.splitter.SentenceSplitter");
       logger.info("Sentence splitter created.");
    }
    

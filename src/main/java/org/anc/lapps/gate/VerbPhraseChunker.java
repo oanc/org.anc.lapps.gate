@@ -9,7 +9,8 @@ public class VerbPhraseChunker extends SimpleGateService
 {
    public VerbPhraseChunker()
    {
-      super("gate.creole.VPChunker");
+      super();
+      createResource("gate.creole.VPChunker");
    }
 
    public long[] produces()

@@ -9,7 +9,8 @@ public class OrthoMatcher extends SimpleGateService
 {
    public OrthoMatcher()
    {
-      super("gate.creole.orthomatcher.OrthoMatcher");
+      super();
+      createResource("gate.creole.orthomatcher.OrthoMatcher");
    }
 
    //TODO Determine what annotation types are returned by the OrthoMatcher.
