@@ -9,11 +9,14 @@ import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.DiscriminatorRegistry;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.vocabulary.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * @author Keith Suderman
@@ -134,6 +137,13 @@ public abstract class SimpleGateService implements WebService
       }
    }
 
+   // TODO: Calculate the proper service ID based on the fully qualified
+   // class name and version number
+   public String getServiceId()
+   {
+      return this.getClass().getCanonicalName() + ":" + Version.getVersion();
+   }
+
    @Override
    public Data configure(Data config)
    {
@@ -147,7 +157,7 @@ public abstract class SimpleGateService implements WebService
       if (savedException != null)
       {
          logger.warn("Returning saved exception: " + savedException.getMessage());
-         return new Data(Types.ERROR, savedException.getMessage());
+         return new Data(Types.ERROR, getStackTrace(savedException));
       }
 
       Document doc;
@@ -158,7 +168,7 @@ public abstract class SimpleGateService implements WebService
       catch (InternalException e)
       {
          logger.error("Internal exception.", e);
-         return new Data(Types.ERROR, e.getMessage());
+         return new Data(Types.ERROR, getStackTrace(e));
       }
 
       Data result = null;
@@ -169,12 +179,13 @@ public abstract class SimpleGateService implements WebService
          logger.info("Executing resource {}", name);
          resource.setDocument(doc);
          resource.execute();
+         doc.getFeatures().put(Metadata.PRODUCED_BY, "GATE:" + name);
          result = new Data(Types.GATE, doc.toXml());
       }
       catch (Exception e)
       {
          logger.error("Error running GATE resource {}", name, e);
-         return new Data(Types.ERROR, e.getMessage());
+         return new Data(Types.ERROR, getStackTrace(e));
       }
       finally
       {
@@ -215,5 +226,13 @@ public abstract class SimpleGateService implements WebService
          throw new InternalException("Unable to parse Gate document", ex);
       }
       return doc;
+   }
+
+   private String getStackTrace(Throwable t)
+   {
+      StringWriter stringWriter = new StringWriter();
+      PrintWriter printWriter = new PrintWriter(stringWriter);
+      t.printStackTrace(printWriter);
+      return stringWriter.toString();
    }
 }
