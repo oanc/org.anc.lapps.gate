@@ -17,7 +17,8 @@ public class NounPhraseChunker extends SimpleGateService
    public NounPhraseChunker()
    {
 //      logger.info("Creating the NounPhraseChunker.");
-      super("mark.chunking.GATEWrapper");
+      super();
+      createResource("mark.chunking.GATEWrapper");
    }
 
 //   public Data configure(Data input)

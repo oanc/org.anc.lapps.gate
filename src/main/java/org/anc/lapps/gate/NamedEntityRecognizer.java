@@ -9,7 +9,8 @@ public class NamedEntityRecognizer extends SimpleGateService
 {
    public NamedEntityRecognizer()
    {
-      super("gate.creole.ANNIETransducer");
+      super();
+      createResource("gate.creole.ANNIETransducer");
    }
 
    public long[] produces()

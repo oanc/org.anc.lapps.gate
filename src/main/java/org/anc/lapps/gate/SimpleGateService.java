@@ -1,9 +1,6 @@
 package org.anc.lapps.gate;
 
-import gate.Document;
-import gate.Factory;
-import gate.Gate;
-import gate.Utils;
+import gate.*;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
 import org.lappsgrid.api.Data;
@@ -28,14 +25,12 @@ public abstract class SimpleGateService implements WebService
 
    protected AbstractLanguageAnalyser resource;
    protected Exception savedException;
-   protected final String name;
+   protected String name;
 
    private static Boolean initialized = false;
 
-   public SimpleGateService(String gateResourceName)
+   public SimpleGateService()
    {
-      logger.info("GateService constructor for {}.", gateResourceName);
-      this.name = gateResourceName;
       synchronized (initialized) {
          if (!initialized)
          {
@@ -110,11 +105,26 @@ public abstract class SimpleGateService implements WebService
 
          }
       }
+   }
+
+   protected void createResource(String gateResourceName)
+   {
+      this.createResource(gateResourceName, Factory.newFeatureMap());
+   }
+
+   protected void createResource(String gateResourceName, FeatureMap map)
+   {
+      this.name = gateResourceName;
+      if (savedException != null)
+      {
+         // Don't stomp on the save exception.
+         return;
+      }
 
       try
       {
          logger.info("Creating resource {}", gateResourceName);
-         resource = (AbstractLanguageAnalyser) Factory.createResource(gateResourceName);
+         resource = (AbstractLanguageAnalyser) Factory.createResource(gateResourceName, map);
          logger.info("Resource created.");
       }
       catch (Exception e)
