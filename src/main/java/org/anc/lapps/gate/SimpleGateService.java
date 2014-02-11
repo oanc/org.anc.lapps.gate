@@ -30,14 +30,14 @@ public abstract class SimpleGateService implements WebService
    protected Exception savedException;
    protected String name;
 
-   private static Boolean initialized = false;
+//   public static Boolean initialized = false;
 
    public SimpleGateService()
    {
-      synchronized (initialized) {
-         if (!initialized)
+      synchronized (State.initialized) {
+         if (!State.initialized)
          {
-            initialized = true;  // We only try this once.
+            State.initialized = true;  // We only try this once.
             try
             {
                logger.info("Configuring Gate.");

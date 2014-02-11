@@ -27,16 +27,16 @@ public abstract class ApplicationService implements WebService
    protected Corpus corpus;
    protected Exception savedException;
 
-   private static Boolean initialized = false;
+   //private static Boolean initialized = false;
 
    public ApplicationService(String name)
    {
       // Lock here to prevent race conditions during initialization.
-      synchronized (initialized)
+      synchronized (State.initialized)
       {
-         if (!initialized)
+         if (!State.initialized)
          {
-            initialized = true;  // We only try this once.
+            State.initialized = true;  // We only try this once.
             try
             {
                logger.info("Configuring Gate.");
