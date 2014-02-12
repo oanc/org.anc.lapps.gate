@@ -8,7 +8,8 @@ public class Tagger extends SimpleGateService
 {
    public Tagger()
    {
-      super("gate.creole.POSTagger");
+      super();
+      createResource("gate.creole.POSTagger");
    }
 
    public long[] requires()

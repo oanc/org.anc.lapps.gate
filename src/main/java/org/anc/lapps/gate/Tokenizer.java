@@ -8,7 +8,8 @@ public class Tokenizer extends SimpleGateService
 {
    public Tokenizer()
    {
-      super("gate.creole.tokeniser.DefaultTokeniser");
+      super();
+      createResource("gate.creole.tokeniser.DefaultTokeniser");
    }
 
    @Override

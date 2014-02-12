@@ -1,9 +1,9 @@
 package org.anc.lapps.gate;
 
-import org.anc.grid.data.masc.client.DataSourceClient;
 import org.anc.io.UTF8Writer;
 import org.junit.Test;
 import org.lappsgrid.api.*;
+import org.lappsgrid.client.DataSourceClient;
 
 import javax.xml.rpc.ServiceException;
 import java.io.*;

@@ -9,7 +9,8 @@ public class Gazetteer extends SimpleGateService
 {
    public Gazetteer()
    {
-      super("gate.creole.gazetteer.DefaultGazetteer");
+      super();
+      createResource("gate.creole.gazetteer.DefaultGazetteer");
    }
 
    public long[] requires() {
