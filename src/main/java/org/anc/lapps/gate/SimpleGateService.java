@@ -179,7 +179,13 @@ public abstract class SimpleGateService implements WebService
          logger.info("Executing resource {}", name);
          resource.setDocument(doc);
          resource.execute();
-         doc.getFeatures().put(Metadata.PRODUCED_BY, "GATE:" + name);
+         FeatureMap features = doc.getFeatures();
+         Object value = features.get(Metadata.PRODUCED_BY);
+         String producedBy = name + ":" + Version.getVersion();
+         if (value != null) {
+            producedBy = value.toString() + ", " + producedBy;
+         }
+         doc.getFeatures().put(Metadata.PRODUCED_BY, producedBy);
          result = new Data(Types.GATE, doc.toXml());
       }
       catch (Exception e)
