@@ -181,7 +181,7 @@ public abstract class SimpleGateService implements WebService
          resource.execute();
          FeatureMap features = doc.getFeatures();
          Object value = features.get(Metadata.PRODUCED_BY);
-         String producedBy = name + "_" + Version.getVersion();
+         String producedBy = name + ":" + Version.getVersion();
          if (value != null) {
             producedBy = value.toString() + ", " + producedBy;
          }
