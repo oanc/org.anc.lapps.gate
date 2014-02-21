@@ -8,6 +8,7 @@ import org.lappsgrid.api.Data;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.vocabulary.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,11 +27,13 @@ public abstract class ApplicationService implements WebService
    protected CorpusController controller;
    protected Corpus corpus;
    protected Exception savedException;
-
+   protected String name;
    //private static Boolean initialized = false;
 
    public ApplicationService(String name)
    {
+      this.name = name;
+
       // Lock here to prevent race conditions during initialization.
       synchronized (State.initialized)
       {
@@ -174,6 +177,8 @@ public abstract class ApplicationService implements WebService
          corpus.add(document);
          controller.execute();
          corpus.clear();
+         String producer = name + ":" + Version.getVersion();
+         document.getFeatures().put(Metadata.PRODUCED_BY, producer);
          return new Data(Types.GATE, document.toXml());
       }
       catch (Exception e)
