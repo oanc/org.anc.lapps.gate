@@ -184,7 +184,9 @@ public abstract class SimpleGateService implements WebService
             producedBy = value.toString() + ", " + producedBy;
          }
          doc.getFeatures().put(Metadata.PRODUCED_BY, producedBy);
-         result = new Data(Types.GATE, doc.toXml());
+         String xml = doc.toXml();
+         Factory.deleteResource(doc);
+         result = new Data(Types.GATE, xml);
       }
       catch (Exception e)
       {

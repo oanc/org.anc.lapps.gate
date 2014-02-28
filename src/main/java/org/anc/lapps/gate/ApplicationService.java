@@ -179,7 +179,9 @@ public abstract class ApplicationService implements WebService
          corpus.clear();
          String producer = name + ":" + Version.getVersion();
          document.getFeatures().put(Metadata.PRODUCED_BY, producer);
-         return new Data(Types.GATE, document.toXml());
+         String xml = document.toXml();
+         Factory.deleteResource(document);
+         return new Data(Types.GATE, xml);
       }
       catch (Exception e)
       {
