@@ -158,7 +158,7 @@ public abstract class SimpleGateService implements WebService
          return new Data(Types.ERROR, getStackTrace(savedException));
       }
 
-      Document doc;
+      Document doc = null;
       try
       {
          doc = getDocument(input);
