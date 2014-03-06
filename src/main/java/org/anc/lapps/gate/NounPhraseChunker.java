@@ -33,11 +33,11 @@ public class NounPhraseChunker extends SimpleGateService
 
    public long[] produces()
    {
-      return new long[] { Types.NOUN_CHUNK };
+      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.NOUN_CHUNK };
    }
 
    public long[] requires()
    {
-      return new long[] { Types.POS };
+      return new long[] { Types.GATE, Types.TOKEN, Types.POS };
    }
 }

@@ -26,14 +26,22 @@ public abstract class SimpleGateService implements WebService
    public static final Logger logger = LoggerFactory.getLogger(SimpleGateService.class);
    public static final Configuration K = new Configuration();
 
-   protected AbstractLanguageAnalyser resource;
+   protected AbstractLanguageAnalyser[] resources = null;
    protected Exception savedException;
    protected String name;
 
-//   public static Boolean initialized = false;
+   // Index used when inserting resources into the resources array.
+   private int index = 0;
 
    public SimpleGateService()
    {
+      this(1);
+   }
+
+   public SimpleGateService(int size)
+   {
+      resources = new AbstractLanguageAnalyser[size];
+
       synchronized (State.initialized) {
          if (!State.initialized)
          {
@@ -126,19 +134,17 @@ public abstract class SimpleGateService implements WebService
 
       try
       {
-         logger.info("Creating resource {}", gateResourceName);
-         resource = (AbstractLanguageAnalyser) Factory.createResource(gateResourceName, map);
+         logger.info("Creating resources {}", gateResourceName);
+         resources[index++] = (AbstractLanguageAnalyser) Factory.createResource(gateResourceName, map);
          logger.info("Resource created.");
       }
       catch (Exception e)
       {
-         logger.error("Unable to create Gate resource.", e);
+         logger.error("Unable to create Gate resources.", e);
          savedException = e;
       }
    }
 
-   // TODO: Calculate the proper service ID based on the fully qualified
-   // class name and version number
    public String getServiceId()
    {
       return this.getClass().getCanonicalName() + ":" + Version.getVersion();
@@ -160,7 +166,7 @@ public abstract class SimpleGateService implements WebService
          return new Data(Types.ERROR, getStackTrace(savedException));
       }
 
-      Document doc;
+      Document doc = null;
       try
       {
          doc = getDocument(input);
@@ -172,25 +178,31 @@ public abstract class SimpleGateService implements WebService
       }
 
       Data result = null;
-//      AbstractLanguageAnalyser resource = null;
+//      AbstractLanguageAnalyser resources = null;
       try
       {
-//         resource = pool.take();
-         logger.info("Executing resource {}", name);
-         resource.setDocument(doc);
-         resource.execute();
-         FeatureMap features = doc.getFeatures();
-         Object value = features.get(Metadata.PRODUCED_BY);
-         String producedBy = name + ":" + Version.getVersion();
-         if (value != null) {
-            producedBy = value.toString() + ", " + producedBy;
+//         resources = pool.take();
+         for (AbstractLanguageAnalyser resource : resources)
+         {
+            logger.info("Executing resource {}", name);
+            resource.setDocument(doc);
+            resource.execute();
+            FeatureMap features = doc.getFeatures();
+            Object value = features.get(Metadata.PRODUCED_BY);
+            String producedBy = name + ":" + Version.getVersion();
+            if (value != null) {
+               producedBy = value.toString() + ", " + producedBy;
+            }
+            doc.getFeatures().put(Metadata.PRODUCED_BY, producedBy);
+            resource.setDocument(null);
          }
-         doc.getFeatures().put(Metadata.PRODUCED_BY, producedBy);
-         result = new Data(Types.GATE, doc.toXml());
+         String xml = doc.toXml();
+         Factory.deleteResource(doc);
+         result = new Data(Types.GATE, xml);
       }
       catch (Exception e)
       {
-         logger.error("Error running GATE resource {}", name, e);
+         logger.error("Error running GATE resources {}", name, e);
          return new Data(Types.ERROR, getStackTrace(e));
       }
       finally

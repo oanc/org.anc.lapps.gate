@@ -15,11 +15,11 @@ public class NamedEntityRecognizer extends SimpleGateService
 
    public long[] produces()
    {
-      return new long[] { Types.NAMED_ENTITES };
+      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.NAMED_ENTITES };
    }
 
    public long[] requires()
    {
-      return new long[] { Types.POS };
+      return new long[] { Types.GATE, Types.TOKEN, Types.POS };
    }
 }

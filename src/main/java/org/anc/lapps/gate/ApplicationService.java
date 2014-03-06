@@ -171,19 +171,27 @@ public abstract class ApplicationService implements WebService
          return DataFactory.error("Unsupported input type. Expected TEXT or JSON_LD");
       }
 
+      Document document = null;
       try
       {
-         Document document = Factory.newDocument(text);
+         document = Factory.newDocument(text);
          corpus.add(document);
          controller.execute();
          corpus.clear();
          String producer = name + ":" + Version.getVersion();
          document.getFeatures().put(Metadata.PRODUCED_BY, producer);
-         return new Data(Types.GATE, document.toXml());
+         String xml = document.toXml();
+         return new Data(Types.GATE, xml);
       }
       catch (Exception e)
       {
          return DataFactory.error(e.getMessage());
+      }
+      finally
+      {
+         if (document != null) {
+            Factory.deleteResource(document);
+         }
       }
    }
 
