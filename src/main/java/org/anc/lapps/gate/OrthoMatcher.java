@@ -15,10 +15,10 @@ public class OrthoMatcher extends SimpleGateService
 
    //TODO Determine what annotation types are returned by the OrthoMatcher.
    public long[] produces() {
-      return new long[] { };
+      return new long[] { Types.GATE, Types.NAMED_ENTITES };
    }
 
    public long[] requires() {
-      return new long[] { Types.NAMED_ENTITES };
+      return new long[] { Types.GATE, Types.NAMED_ENTITES };
    }
 }

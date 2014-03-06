@@ -17,12 +17,12 @@ public class SentenceSplitter extends SimpleGateService
    public long[] requires()
    {
       logger.info("Called requires");
-      return new long[] { Types.GATE };
+      return new long[] { Types.GATE, Types.TOKEN };
    }
    
    public long[] produces()
    {
       logger.info("Called produces.");
-      return new long[] { Types.SENTENCE };
+      return new long[] { Types.GATE, Types.TOKEN, Types.SENTENCE };
    }
 }

@@ -25,4 +25,10 @@ public class Annie extends ApplicationService
    {
       super("annie.gapp");
    }
+
+   public long[] produces()
+   {
+      return new long[] { Types.GATE, Types.TOKEN, Types.SENTENCE, Types.POS,
+         Types.NAMED_ENTITES, Types.LEMMA };
+   }
 }

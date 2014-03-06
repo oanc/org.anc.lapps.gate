@@ -15,11 +15,11 @@ public class Coreferencer extends SimpleGateService
 
    public long[] produces()
    {
-      return new long[] { Types.COREF };
+      return new long[] { Types.GATE, Types.NAMED_ENTITES, Types.COREF };
    }
 
    public long[] requires()
    {
-      return new long[] { Types.NAMED_ENTITES };
+      return new long[] { Types.GATE, Types.NAMED_ENTITES };
    }
 }

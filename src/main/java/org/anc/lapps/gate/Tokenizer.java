@@ -17,7 +17,6 @@ public class Tokenizer extends SimpleGateService
    {
       return new long[] {
         Types.GATE,
-        Types.SENTENCE
       };
    }
 
@@ -26,7 +25,6 @@ public class Tokenizer extends SimpleGateService
    {
       return new long[] {
             Types.GATE,
-            Types.SENTENCE,
             Types.TOKEN
       };
    }

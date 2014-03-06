@@ -15,8 +15,7 @@ public class Tagger extends SimpleGateService
    public long[] requires()
    {
       return new long[] {
-//            Types.GATE,
-//            Types.SENTENCE,
+            Types.GATE,
             Types.TOKEN
       };
    }
@@ -24,9 +23,8 @@ public class Tagger extends SimpleGateService
    public long[] produces()
    {
       return new long[] {
-//            Types.GATE,
-//            Types.SENTENCE,
-//            Types.TOKEN,
+            Types.GATE,
+            Types.TOKEN,
             Types.POS
          };      
    }

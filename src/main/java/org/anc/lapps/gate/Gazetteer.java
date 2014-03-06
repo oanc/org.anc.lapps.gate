@@ -14,11 +14,11 @@ public class Gazetteer extends SimpleGateService
    }
 
    public long[] requires() {
-      return new long[] {Types.TOKEN };
+      return new long[] { Types.GATE, Types.TOKEN };
    }
 
    // TODO Determine what annotation types are returned by the Gazetteer.
    public long[] produces() {
-      return new long[] { };
+      return new long[] { Types.GATE, Types.TOKEN };
    }
 }
