@@ -110,8 +110,8 @@ public abstract class PooledGateService implements WebService
 
       try
       {
-         logger.info("Creating resource {}", gateResourceName);
-//         resource = (AbstractLanguageAnalyser) Factory.createResource(gateResourceName);
+         logger.info("Creating resources {}", gateResourceName);
+//         resources = (AbstractLanguageAnalyser) Factory.createResource(gateResourceName);
 //         logger.info("Resource created.");
          logger.debug("Initializing worker pool. Size: " + K.POOL_SIZE);
          pool = new ArrayBlockingQueue<AbstractLanguageAnalyser>(K.POOL_SIZE);
@@ -159,14 +159,14 @@ public abstract class PooledGateService implements WebService
       try
       {
          resource = pool.take();
-         logger.info("Executing resource {}", name);
+         logger.info("Executing resources {}", name);
          resource.setDocument(doc);
          resource.execute();
          result = new Data(Types.GATE, doc.toXml());
       }
       catch (Exception e)
       {
-         logger.error("Error running GATE resource {}", name, e);
+         logger.error("Error running GATE resources {}", name, e);
          return new Data(Types.ERROR, e.getMessage());
       }
       finally
