@@ -162,6 +162,7 @@ public abstract class PooledGateService implements WebService
          logger.info("Executing resources {}", name);
          resource.setDocument(doc);
          resource.execute();
+         resource.setDocument(null);
          result = new Data(Types.GATE, doc.toXml());
       }
       catch (Exception e)

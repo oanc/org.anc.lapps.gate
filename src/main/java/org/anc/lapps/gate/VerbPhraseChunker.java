@@ -15,11 +15,11 @@ public class VerbPhraseChunker extends SimpleGateService
 
    public long[] produces()
    {
-      return new long[] { Types.VERB_CHUNK };
+      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.VERB_CHUNK };
    }
 
    public long[] requires()
    {
-      return new long[] { Types.POS };
+      return new long[] { Types.GATE, Types.TOKEN, Types.POS };
    }
 }
