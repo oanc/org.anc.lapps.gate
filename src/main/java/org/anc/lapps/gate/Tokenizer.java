@@ -16,7 +16,7 @@ public class Tokenizer extends SimpleGateService
    public long[] requires()
    {
       return new long[] {
-        Types.GATE,
+        Types.TEXT
       };
    }
 
