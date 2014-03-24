@@ -22,7 +22,7 @@
         <lapps.core.version>1.0.2</lapps.core.version>
     </properties>
     <build>
-        <finalName>GateServices${project.version}</finalName>
+        <finalName>GateServices#${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
