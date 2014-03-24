@@ -174,6 +174,7 @@ public abstract class ApplicationService implements WebService
       Document document = null;
       try
       {
+         logger.debug("Running {}", name);
          document = Factory.newDocument(text);
          corpus.add(document);
          controller.execute();
@@ -185,6 +186,7 @@ public abstract class ApplicationService implements WebService
       }
       catch (Exception e)
       {
+         logger.error(name, e);
          return DataFactory.error(e.getMessage());
       }
       finally
