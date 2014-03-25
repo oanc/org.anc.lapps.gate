@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.anc.lapps</groupId>
     <artifactId>gate</artifactId>
-    <version>1.3.2-SNAPSHOT</version>
+    <version>1.3.3</version>
     <name>Services: GATE</name>
     <description>GATE processing resources wrapped as LAPPS services.</description>
     <packaging>war</packaging>
@@ -19,7 +19,7 @@
     </scm>
     <properties>
         <lapps.version>1.0.1</lapps.version>
-        <lapps.core.version>1.0.2</lapps.core.version>
+        <lapps.core.version>1.1.0</lapps.core.version>
     </properties>
     <build>
         <finalName>GateServices#${project.version}</finalName>
@@ -91,18 +91,18 @@
         <dependency>
             <groupId>org.anc</groupId>
             <artifactId>common</artifactId>
-            <version>3.3.0</version>
+            <version>3.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>client</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.anc.lapps</groupId>
             <artifactId>serialization</artifactId>
-            <version>0.11.0</version>
+            <version>0.12.1</version>
         </dependency>
         <!-- javamelody-core -->
         <dependency>
