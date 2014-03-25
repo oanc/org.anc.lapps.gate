@@ -28,6 +28,6 @@ deploy:
 	sudo cp target/$(WAR) $(TOMCAT)/webapps
 	
 upload:
-	grid-put target/$(WAR) /tmp
+	grid-put target/$(WAR) /home/suderman/archives
 	
 
