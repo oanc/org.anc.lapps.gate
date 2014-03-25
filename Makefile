@@ -1,6 +1,7 @@
 VERSION=$(shell cat VERSION)
 #TOMCAT_HOME=/usr/share/tomcat/service-manager
-TOMCAT=/Applications/Servers/tomcat/service-manager
+TOMCAT=/Applications/Servers/tomcat
+SERVER=/server-1
 WAR=GateServices\#$(VERSION).war
 
 help:
