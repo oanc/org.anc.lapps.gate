@@ -1,6 +1,7 @@
 VERSION=$(shell cat VERSION)
 #TOMCAT_HOME=/usr/share/tomcat/service-manager
-TOMCAT=/Applications/Servers/tomcat/service-manager
+TOMCAT=/Applications/Servers/tomcat
+SERVER=/server-1
 WAR=GateServices\#$(VERSION).war
 
 help:
@@ -28,6 +29,6 @@ deploy:
 	sudo cp target/$(WAR) $(TOMCAT)/webapps
 	
 upload:
-	grid-put target/$(WAR) /tmp
+	grid-put target/$(WAR) /home/suderman/archives
 	
 
