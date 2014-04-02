@@ -24,22 +24,6 @@
     <build>
         <finalName>GateServices#${project.version}</finalName>
         <plugins>
-            <!--
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>8.1.11.v20130520</version>
-                <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <connectors>
-                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>9090</port>
-                            <maxIdleTime>60000</maxIdleTime>
-                        </connector>
-                    </connectors>
-                </configuration>
-            </plugin>
-            -->
             <plugin>
                 <groupId>org.anc.maven.plugins</groupId>
                 <artifactId>anc-maven-plugin</artifactId>
@@ -106,13 +90,12 @@
             <artifactId>serialization</artifactId>
             <version>0.12.1</version>
         </dependency>
-        <!-- javamelody-core -->
         <dependency>
             <groupId>net.bull.javamelody</groupId>
             <artifactId>javamelody-core</artifactId>
             <version>1.45.0</version>
         </dependency>
-        <!-- itext, option to add PDF export -->
+        <!--
         <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itext</artifactId>
@@ -132,5 +115,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        -->
     </dependencies>
 </project>
