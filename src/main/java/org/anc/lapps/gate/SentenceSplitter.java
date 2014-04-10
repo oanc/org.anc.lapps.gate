@@ -4,7 +4,7 @@ import org.lappsgrid.discriminator.Types;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SentenceSplitter extends SimpleGateService
+public class SentenceSplitter extends PooledGateService
 {
    protected static final Logger logger = LoggerFactory.getLogger(SentenceSplitter.class);
    public SentenceSplitter()
@@ -23,6 +23,6 @@ public class SentenceSplitter extends SimpleGateService
    public long[] produces()
    {
       logger.info("Called produces.");
-      return new long[] { Types.GATE, Types.TOKEN, Types.SENTENCE };
+      return new long[] { Types.GATE, Types.SENTENCE };
    }
 }

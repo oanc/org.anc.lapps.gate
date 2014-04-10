@@ -4,7 +4,7 @@ import org.anc.lapps.gate.PooledGateService;
 import org.anc.lapps.gate.SimpleGateService;
 import org.lappsgrid.discriminator.Types;
 
-public class Tokenizer extends SimpleGateService
+public class Tokenizer extends PooledGateService
 {
    public Tokenizer()
    {

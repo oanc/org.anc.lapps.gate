@@ -5,7 +5,7 @@ import org.lappsgrid.discriminator.Types;
 /**
  * @author Keith Suderman
  */
-public class VerbPhraseChunker extends SimpleGateService
+public class VerbPhraseChunker extends PooledGateService
 {
    public VerbPhraseChunker()
    {
@@ -15,7 +15,7 @@ public class VerbPhraseChunker extends SimpleGateService
 
    public long[] produces()
    {
-      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.VERB_CHUNK };
+      return new long[] { Types.GATE, Types.VERB_CHUNK };
    }
 
    public long[] requires()

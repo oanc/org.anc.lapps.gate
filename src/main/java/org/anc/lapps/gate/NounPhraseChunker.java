@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Keith Suderman
  */
-public class NounPhraseChunker extends SimpleGateService
+public class NounPhraseChunker extends PooledGateService
 {
 //   private Logger logger = LoggerFactory.getLogger(NounPhraseChunker.class);
 
@@ -33,7 +33,7 @@ public class NounPhraseChunker extends SimpleGateService
 
    public long[] produces()
    {
-      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.NOUN_CHUNK };
+      return new long[] { Types.GATE, Types.NOUN_CHUNK };
    }
 
    public long[] requires()

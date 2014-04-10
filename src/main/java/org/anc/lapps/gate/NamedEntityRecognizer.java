@@ -5,7 +5,7 @@ import org.lappsgrid.discriminator.Types;
 /**
  * @author Keith Suderman
  */
-public class NamedEntityRecognizer extends SimpleGateService
+public class NamedEntityRecognizer extends PooledGateService
 {
    public NamedEntityRecognizer()
    {
@@ -15,7 +15,7 @@ public class NamedEntityRecognizer extends SimpleGateService
 
    public long[] produces()
    {
-      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.NAMED_ENTITES };
+      return new long[] { Types.GATE, Types.NAMED_ENTITES };
    }
 
    public long[] requires()

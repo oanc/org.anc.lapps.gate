@@ -4,7 +4,7 @@ import org.anc.lapps.gate.PooledGateService;
 import org.anc.lapps.gate.SimpleGateService;
 import org.lappsgrid.discriminator.Types;
 
-public class Tagger extends SimpleGateService
+public class Tagger extends PooledGateService
 {
    public Tagger()
    {
@@ -24,7 +24,6 @@ public class Tagger extends SimpleGateService
    {
       return new long[] {
             Types.GATE,
-            Types.TOKEN,
             Types.POS
          };      
    }

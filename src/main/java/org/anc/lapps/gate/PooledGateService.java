@@ -1,5 +1,6 @@
 package org.anc.lapps.gate;
 
+import gate.*;
 import org.slf4j.*;
 
 import java.io.File;
@@ -7,10 +8,6 @@ import java.io.FileNotFoundException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-import gate.Document;
-import gate.Factory;
-import gate.Gate;
-import gate.Utils;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
 
@@ -26,14 +23,13 @@ public abstract class PooledGateService implements WebService
 
    protected BlockingQueue<AbstractLanguageAnalyser> pool; // = new ArrayBlockingQueue<AbstractLanguageAnalyser>(K.POOL_SIZE);
    protected Exception savedException;
-   protected final String name;
+   protected String name;
 
    private static boolean initialized = false;
 
-   public PooledGateService(String gateResourceName)
+   public PooledGateService()
    {
-      logger.info("GateService constructor for {}.", gateResourceName);
-      this.name = gateResourceName;
+      logger.info("PooledGateService constructor.");
       if (!initialized)
       {
          initialized = true;
@@ -107,7 +103,17 @@ public abstract class PooledGateService implements WebService
          }
 
       }
+   }
 
+   protected void createResource(String gateResourceName)
+   {
+      createResource(gateResourceName, Factory.newFeatureMap());
+   }
+
+   protected void createResource(String gateResourceName, FeatureMap map)
+   {
+      logger.info("Creating a pool of {}", gateResourceName);
+      this.name = gateResourceName;
       try
       {
          logger.info("Creating resources {}", gateResourceName);
@@ -117,7 +123,7 @@ public abstract class PooledGateService implements WebService
          pool = new ArrayBlockingQueue<AbstractLanguageAnalyser>(K.POOL_SIZE);
          for (int i = 0; i < K.POOL_SIZE; ++i)
          {
-            pool.add((AbstractLanguageAnalyser) Factory.createResource(gateResourceName));
+            pool.add((AbstractLanguageAnalyser) Factory.createResource(gateResourceName, map));
          }
       }
       catch (Exception e)

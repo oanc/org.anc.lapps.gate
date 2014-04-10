@@ -5,7 +5,7 @@ import org.lappsgrid.discriminator.Types;
 /**
  * @author Keith Suderman
  */
-public class Gazetteer extends SimpleGateService
+public class Gazetteer extends PooledGateService
 {
    public Gazetteer()
    {

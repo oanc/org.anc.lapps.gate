@@ -5,7 +5,7 @@ import org.lappsgrid.discriminator.Types;
 /**
  * @author Keith Suderman
  */
-public class OrthoMatcher extends SimpleGateService
+public class OrthoMatcher extends PooledGateService
 {
    public OrthoMatcher()
    {

@@ -5,7 +5,7 @@ import org.lappsgrid.discriminator.Types;
 /**
  * @author Keith Suderman
  */
-public class Coreferencer extends SimpleGateService
+public class Coreferencer extends PooledGateService
 {
    public Coreferencer()
    {
