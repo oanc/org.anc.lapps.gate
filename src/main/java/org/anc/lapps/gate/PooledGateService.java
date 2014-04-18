@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
@@ -20,6 +21,8 @@ public abstract class PooledGateService implements WebService
 {
    public static final Logger logger = LoggerFactory.getLogger(PooledGateService.class);
    public static final Configuration K = new Configuration();
+   public static final long DELAY = 5;
+   public static final TimeUnit UNIT = TimeUnit.SECONDS;
 
    protected BlockingQueue<AbstractLanguageAnalyser> pool; // = new ArrayBlockingQueue<AbstractLanguageAnalyser>(K.POOL_SIZE);
    protected Exception savedException;
@@ -27,6 +30,7 @@ public abstract class PooledGateService implements WebService
 
    private static boolean initialized = false;
 
+   protected static final String BUSY = "The service is currently busy. Please try again shortly.";
    public PooledGateService()
    {
       logger.info("PooledGateService constructor.");
@@ -139,50 +143,56 @@ public abstract class PooledGateService implements WebService
       return DataFactory.error("Unsupported operation.");
    }
    
-   @Override
-   public Data execute(Data input)
+   public Document doExecute(Data input) throws Exception
    {
       logger.debug("Executing {}", name);
       if (savedException != null)
       {
          logger.warn("Returning saved exception: " + savedException.getMessage());
-         return new Data(Types.ERROR, savedException.getMessage());
+         //return new Data(Types.ERROR, savedException.getMessage());
+         throw savedException;
       }
       
       Document doc;
-      try
-      {
+//      try
+//      {
          doc = getDocument(input);
-      }
-      catch (InternalException e)
-      {
-         logger.error("Internal exception.", e);
-         return new Data(Types.ERROR, e.getMessage());
-      }
+//      }
+//      catch (InternalException e)
+//      {
+//         logger.error("Internal exception.", e);
+//         return new Data(Types.ERROR, e.getMessage());
+//      }
 
-      Data result = null;
       AbstractLanguageAnalyser resource = null;
       try
       {
-         resource = pool.take();
+//         resource = pool.take();
+         resource = pool.poll(DELAY, UNIT);
+         if (resource == null) {
+            return null;
+         }
          logger.info("Executing resources {}", name);
          resource.setDocument(doc);
          resource.execute();
          resource.setDocument(null);
-         result = new Data(Types.GATE, doc.toXml());
+//         result = new Data(Types.GATE, doc.toXml());
       }
-      catch (Exception e)
-      {
-         logger.error("Error running GATE resources {}", name, e);
-         return new Data(Types.ERROR, e.getMessage());
-      }
+//      catch (Exception e)
+//      {
+//         logger.error("Error running GATE resources {}", name, e);
+//         return new Data(Types.ERROR, e.getMessage());
+//      }
       finally
       {
-         pool.add(resource);
+         if (resource != null)
+         {
+            pool.add(resource);
+         }
          Factory.deleteResource(doc);
       }
       logger.info("Execution complete.");
-      return result;
+      return doc;
    }
 
    public void destroy()

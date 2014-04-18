@@ -23,7 +23,7 @@
         <lapps.version>1.0.1</lapps.version>
         <lapps.core.version>1.1.0</lapps.core.version>
         <lapps.client.version>1.0.4</lapps.client.version>
-        <lapps.vocabulary.version>0.9.4</lapps.vocabulary.version>
+        <lapps.vocabulary.version>0.10.0-SNAPSHOT</lapps.vocabulary.version>
         <lapps.discriminator.version>1.2.3</lapps.discriminator.version>
     </properties>
     <build>
