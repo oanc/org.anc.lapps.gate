@@ -8,7 +8,9 @@ import org.anc.lapps.gate.SimpleGateService;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
+import org.lappsgrid.vocabulary.Metadata;
 
 import java.util.List;
 
@@ -53,9 +55,13 @@ public class Tagger extends PooledGateService
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = Factory.newFeatureMap();
-      features.put("type", Contents.TagSets.GATE);
-      features.put("producer", producer);
-      return DataFactory.gateDocument(document.toXml());
+      features.put(Annotations.PART_OF_SPEECH, producer + " " + Contents.TagSets.GATE);
+//      features.put(Metadata.Contains.TYPE, Contents.TagSets.GATE);
+//      features.put(Metadata.Contains.PRODUCER, producer);
+//      features.put("annotation", Annotations.PART_OF_SPEECH);
+      Data result = DataFactory.gateDocument(document.toXml());
+      Factory.deleteResource(document);
+      return result;
    }
 
 }

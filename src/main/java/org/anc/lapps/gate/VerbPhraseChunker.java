@@ -6,7 +6,9 @@ import gate.FeatureMap;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
+import org.lappsgrid.vocabulary.Metadata;
 
 /**
  * @author Keith Suderman
@@ -46,9 +48,13 @@ public class VerbPhraseChunker extends PooledGateService
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = Factory.newFeatureMap();
-      features.put("type", Contents.Chunks.VERBS);
-      features.put("producer", producer);
-      return DataFactory.gateDocument(document.toXml());
+      features.put(Annotations.VCHUNK, producer + " " + Contents.Chunks.VERBS);
+//      features.put(Metadata.Contains.TYPE, Contents.Chunks.VERBS);
+//      features.put(Metadata.Contains.PRODUCER, producer);
+//      features.put("annotation", Annotations.VCHUNK);
+      Data result = DataFactory.gateDocument(document.toXml());
+      Factory.deleteResource(document);
+      return result;
    }
 
 }

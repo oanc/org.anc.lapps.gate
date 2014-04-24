@@ -6,7 +6,9 @@ import gate.FeatureMap;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
+import org.lappsgrid.vocabulary.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,9 +51,13 @@ public class SentenceSplitter extends PooledGateService
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = Factory.newFeatureMap();
-      features.put("type", Contents.Chunks.SENTENCES);
-      features.put("producer", producer);
-      return DataFactory.gateDocument(document.toXml());
+      features.put(Annotations.SENTENCE, producer + " chunk:annie");
+//      features.put(Metadata.Contains.TYPE, "chunk:annie");
+//      features.put(Metadata.Contains.PRODUCER, producer);
+//      features.put("annotation", Annotations.SENTENCE);
+      Data result = DataFactory.gateDocument(document.toXml());
+      Factory.deleteResource(document);
+      return result;
    }
 
 }

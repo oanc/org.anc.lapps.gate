@@ -6,6 +6,8 @@ import gate.FeatureMap;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.vocabulary.Annotations;
+import org.lappsgrid.vocabulary.Metadata;
 
 /**
  * @author Keith Suderman
@@ -44,9 +46,13 @@ public class Gazetteer extends PooledGateService
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = Factory.newFeatureMap();
-      features.put("type", "lookup");
-      features.put("producer", producer);
-      return DataFactory.gateDocument(document.toXml());
+      features.put(Annotations.LOOKUP, producer + " lookup:gate");
+//      features.put(Metadata.Contains.TYPE, "lookup:gate");
+//      features.put(Metadata.Contains.PRODUCER, producer);
+//      features.put("annotation", Annotations.LOOKUP);
+      Data result = DataFactory.gateDocument(document.toXml());
+      Factory.deleteResource(document);
+      return result;
    }
 
 }

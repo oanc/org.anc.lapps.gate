@@ -6,6 +6,8 @@ import gate.FeatureMap;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.vocabulary.Annotations;
+import org.lappsgrid.vocabulary.Metadata;
 
 /**
  * @author Keith Suderman
@@ -45,8 +47,12 @@ public class Coreferencer extends PooledGateService
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = Factory.newFeatureMap();
-      features.put("type", "coref");
-      features.put("producer", producer);
-      return DataFactory.gateDocument(document.toXml());
+      features.put(Annotations.PRONOMINAL_CORREFERNCE, producer + " coref:gate");
+//      features.put(Metadata.Contains.TYPE, "coref:gate");
+//      features.put(Metadata.Contains.PRODUCER, producer);
+//      features.put("annotation", Annotations.COREFERENCE);
+      Data result = DataFactory.gateDocument(document.toXml());
+      Factory.deleteResource(document);
+      return result;
    }
 }

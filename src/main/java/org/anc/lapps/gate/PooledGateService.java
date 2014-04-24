@@ -189,7 +189,7 @@ public abstract class PooledGateService implements WebService
          {
             pool.add(resource);
          }
-         Factory.deleteResource(doc);
+//         Factory.deleteResource(doc);
       }
       logger.info("Execution complete.");
       return doc;

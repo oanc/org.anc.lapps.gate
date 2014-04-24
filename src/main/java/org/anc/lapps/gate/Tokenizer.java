@@ -8,7 +8,9 @@ import org.anc.lapps.gate.SimpleGateService;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
+import org.lappsgrid.vocabulary.Metadata;
 
 public class Tokenizer extends PooledGateService
 {
@@ -52,8 +54,12 @@ public class Tokenizer extends PooledGateService
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = Factory.newFeatureMap();
-      features.put("type", Contents.Tokenizations.ANNIE);
-      features.put("producer", producer);
-      return DataFactory.gateDocument(document.toXml());
+      features.put(Annotations.TOKEN, producer + " " + Contents.Tokenizations.ANNIE);
+//      features.put(Metadata.Contains.TYPE, Contents.Tokenizations.ANNIE);
+//      features.put(Metadata.Contains.PRODUCER, producer);
+//      features.put("annotation", Annotations.TOKEN);
+      Data result = DataFactory.gateDocument(document.toXml());
+      Factory.deleteResource(document);
+      return result;
    }
 }
