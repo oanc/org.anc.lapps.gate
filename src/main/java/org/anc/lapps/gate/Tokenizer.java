@@ -46,18 +46,22 @@ public class Tokenizer extends PooledGateService
       }
       catch (Exception e)
       {
-         return DataFactory.error("Unable to execute the Coreferencer.", e);
+         return DataFactory.error("Unable to execute the Tokenizer.", e);
       }
       if (document == null)
       {
          return DataFactory.error(BUSY);
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
-      FeatureMap features = Factory.newFeatureMap();
-      features.put(Annotations.TOKEN, producer + " " + Contents.Tokenizations.ANNIE);
-//      features.put(Metadata.Contains.TYPE, Contents.Tokenizations.ANNIE);
-//      features.put(Metadata.Contains.PRODUCER, producer);
-//      features.put("annotation", Annotations.TOKEN);
+
+      FeatureMap features = document.getFeatures();
+      Integer step = (Integer) features.get("lapps:step");
+      if (step == null) {
+         step = 1;
+      }
+      features.put("lapps:step", step + 1);
+      features.put("lapps:" + Annotations.TOKEN, step + " " + producer + " " + Contents.Tokenizations.ANNIE);
+
       Data result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;

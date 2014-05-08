@@ -47,18 +47,20 @@ public class Tagger extends PooledGateService
       }
       catch (Exception e)
       {
-         return DataFactory.error("Unable to execute the Coreferencer.", e);
+         return DataFactory.error("Unable to execute the Tagger.", e);
       }
       if (document == null)
       {
          return DataFactory.error(BUSY);
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
-      FeatureMap features = Factory.newFeatureMap();
-      features.put(Annotations.PART_OF_SPEECH, producer + " " + Contents.TagSets.GATE);
-//      features.put(Metadata.Contains.TYPE, Contents.TagSets.GATE);
-//      features.put(Metadata.Contains.PRODUCER, producer);
-//      features.put("annotation", Annotations.PART_OF_SPEECH);
+      FeatureMap features = document.getFeatures();
+      Integer step = (Integer) features.get("lapps:step");
+      if (step == null) {
+         step = 1;
+      }
+      features.put("lapps:step", step + 1);
+      features.put("lapps:" + Annotations.PART_OF_SPEECH, step + " " + producer + " " + Contents.TagSets.GATE);
       Data result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;

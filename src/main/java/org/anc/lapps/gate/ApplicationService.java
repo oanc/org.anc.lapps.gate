@@ -178,8 +178,8 @@ public abstract class ApplicationService implements WebService
          corpus.add(document);
          controller.execute();
          corpus.clear();
-         String producer = name + ":" + Version.getVersion();
-         document.getFeatures().put(Metadata.PRODUCED_BY, producer);
+//         String producer = name + ":" + Version.getVersion();
+//         document.getFeatures().put(Metadata.PRODUCED_BY, producer);
          String xml = document.toXml();
          return new Data(Types.GATE, xml);
       }

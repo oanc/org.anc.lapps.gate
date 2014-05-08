@@ -9,6 +9,8 @@ import org.lappsgrid.discriminator.Types;
 import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Metadata;
 
+import java.util.*;
+
 /**
  * @author Keith Suderman
  */
@@ -46,8 +48,13 @@ public class Coreferencer extends PooledGateService
          return DataFactory.error(BUSY);
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
-      FeatureMap features = Factory.newFeatureMap();
-      features.put(Annotations.PRONOMINAL_CORREFERNCE, producer + " coref:gate");
+      FeatureMap features = document.getFeatures();
+      Integer step = (Integer) features.get("lapps:step");
+      if (step == null) {
+         step = 1;
+      }
+      features.put("lapps:step", step + 1);
+      features.put("lapps:" + Annotations.PRONOMINAL_CORREFERNCE, step + " " + producer + " coref:gate");
 //      features.put(Metadata.Contains.TYPE, "coref:gate");
 //      features.put(Metadata.Contains.PRODUCER, producer);
 //      features.put("annotation", Annotations.COREFERENCE);
@@ -55,4 +62,5 @@ public class Coreferencer extends PooledGateService
       Factory.deleteResource(document);
       return result;
    }
+
 }

@@ -40,18 +40,20 @@ public class NamedEntityRecognizer extends PooledGateService
       }
       catch (Exception e)
       {
-         return DataFactory.error("Unable to execute the Coreferencer.", e);
+         return DataFactory.error("Unable to execute the Named Entity Recognizer.", e);
       }
       if (document == null)
       {
          return DataFactory.error(BUSY);
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
-      FeatureMap features = Factory.newFeatureMap();
-      features.put(Annotations.NE, producer + " ner:annie");
-//      features.put(Metadata.Contains.TYPE, "ner:annie");
-//      features.put(Metadata.Contains.PRODUCER, producer);
-//      features.put("annotation", Annotations.NE);
+      FeatureMap features = document.getFeatures();
+      Integer step = (Integer) features.get("lapps:step");
+      if (step == null) {
+         step = 1;
+      }
+      features.put("lapps:step", step + 1);
+      features.put("lapps:" + Annotations.NE, step + " " + producer + " ner:annie");
       Data result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
