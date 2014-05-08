@@ -56,7 +56,7 @@ public class SentenceSplitter extends PooledGateService
          step = 1;
       }
       features.put("lapps:step", step + 1);
-      features.put("lapps:" + Annotations.SENTENCE, step + " " + producer + " chunk:annie");
+      features.put("lapps:" + Annotations.SENTENCE, step + " " + producer + " " + Contents.Chunks.SENTENCES);
       Data result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
