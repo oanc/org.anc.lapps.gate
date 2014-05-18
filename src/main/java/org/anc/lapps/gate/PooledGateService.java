@@ -93,7 +93,8 @@ public abstract class PooledGateService implements WebService
             File[] files = plugins.listFiles();
             for (File directory : files)
             {
-               if (directory.isDirectory())
+               File creole = new File(directory, "creole.xml");
+               if (directory.isDirectory() && creole.exists())
                {
                   logger.info("Registering plugin: {}", directory.getPath());
                   Gate.getCreoleRegister().registerDirectories(directory.toURI().toURL());

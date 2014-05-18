@@ -25,6 +25,7 @@
         <lapps.client.version>1.0.4</lapps.client.version>
         <lapps.vocabulary.version>0.10.0-SNAPSHOT</lapps.vocabulary.version>
         <lapps.discriminator.version>1.2.3</lapps.discriminator.version>
+        <lapps.serialization.version>0.13.0-SNAPSHOT</lapps.serialization.version>
     </properties>
     <build>
         <finalName>GateServices#${project.version}</finalName>
@@ -88,6 +89,12 @@
             <groupId>org.lappsgrid</groupId>
             <artifactId>client</artifactId>
             <version>${lapps.client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.anc.lapps</groupId>
+            <artifactId>serialization</artifactId>
+            <version>0.13.0-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
         <!--
         <dependency>
