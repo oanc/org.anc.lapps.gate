@@ -4,7 +4,6 @@ import gate.*;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
 import gate.util.persistence.PersistenceManager;
-import org.anc.lapps.serialization.Container;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.Types;
