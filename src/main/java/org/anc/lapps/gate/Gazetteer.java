@@ -26,7 +26,7 @@ public class Gazetteer extends PooledGateService
 
    // TODO Determine what annotation types are returned by the Gazetteer.
    public long[] produces() {
-      return new long[] { Types.GATE, Types.TOKEN };
+      return new long[] { Types.GATE, Types.LOOKUP };
    }
 
    public Data execute(Data input)

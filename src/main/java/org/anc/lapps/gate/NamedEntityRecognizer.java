@@ -23,12 +23,12 @@ public class NamedEntityRecognizer extends PooledGateService
 
    public long[] produces()
    {
-      return new long[] { Types.GATE, Types.NAMED_ENTITES };
+      return new long[] { Types.GATE, Types.PERSON, Types.LOCATION, Types.ORGANIZATION };
    }
 
    public long[] requires()
    {
-      return new long[] { Types.GATE, Types.TOKEN, Types.POS };
+      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.LOOKUP };
    }
 
    public Data execute(Data input)
