@@ -1,16 +1,14 @@
 package org.anc.lapps.gate;
 
+import gate.*;
 import org.slf4j.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
-import gate.Document;
-import gate.Factory;
-import gate.Gate;
-import gate.Utils;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
 
@@ -23,17 +21,19 @@ public abstract class PooledGateService implements WebService
 {
    public static final Logger logger = LoggerFactory.getLogger(PooledGateService.class);
    public static final Configuration K = new Configuration();
+   public static final long DELAY = 5;
+   public static final TimeUnit UNIT = TimeUnit.SECONDS;
 
    protected BlockingQueue<AbstractLanguageAnalyser> pool; // = new ArrayBlockingQueue<AbstractLanguageAnalyser>(K.POOL_SIZE);
    protected Exception savedException;
-   protected final String name;
+   protected String name;
 
    private static boolean initialized = false;
 
-   public PooledGateService(String gateResourceName)
+   protected static final String BUSY = "The service is currently busy. Please try again shortly.";
+   public PooledGateService()
    {
-      logger.info("GateService constructor for {}.", gateResourceName);
-      this.name = gateResourceName;
+      logger.info("PooledGateService constructor.");
       if (!initialized)
       {
          initialized = true;
@@ -93,7 +93,8 @@ public abstract class PooledGateService implements WebService
             File[] files = plugins.listFiles();
             for (File directory : files)
             {
-               if (directory.isDirectory())
+               File creole = new File(directory, "creole.xml");
+               if (directory.isDirectory() && creole.exists())
                {
                   logger.info("Registering plugin: {}", directory.getPath());
                   Gate.getCreoleRegister().registerDirectories(directory.toURI().toURL());
@@ -107,7 +108,17 @@ public abstract class PooledGateService implements WebService
          }
 
       }
+   }
 
+   protected void createResource(String gateResourceName)
+   {
+      createResource(gateResourceName, Factory.newFeatureMap());
+   }
+
+   protected void createResource(String gateResourceName, FeatureMap map)
+   {
+      logger.info("Creating a pool of {}", gateResourceName);
+      this.name = gateResourceName;
       try
       {
          logger.info("Creating resources {}", gateResourceName);
@@ -117,7 +128,7 @@ public abstract class PooledGateService implements WebService
          pool = new ArrayBlockingQueue<AbstractLanguageAnalyser>(K.POOL_SIZE);
          for (int i = 0; i < K.POOL_SIZE; ++i)
          {
-            pool.add((AbstractLanguageAnalyser) Factory.createResource(gateResourceName));
+            pool.add((AbstractLanguageAnalyser) Factory.createResource(gateResourceName, map));
          }
       }
       catch (Exception e)
@@ -133,50 +144,56 @@ public abstract class PooledGateService implements WebService
       return DataFactory.error("Unsupported operation.");
    }
    
-   @Override
-   public Data execute(Data input)
+   public Document doExecute(Data input) throws Exception
    {
       logger.debug("Executing {}", name);
       if (savedException != null)
       {
          logger.warn("Returning saved exception: " + savedException.getMessage());
-         return new Data(Types.ERROR, savedException.getMessage());
+         //return new Data(Types.ERROR, savedException.getMessage());
+         throw savedException;
       }
       
       Document doc;
-      try
-      {
+//      try
+//      {
          doc = getDocument(input);
-      }
-      catch (InternalException e)
-      {
-         logger.error("Internal exception.", e);
-         return new Data(Types.ERROR, e.getMessage());
-      }
+//      }
+//      catch (InternalException e)
+//      {
+//         logger.error("Internal exception.", e);
+//         return new Data(Types.ERROR, e.getMessage());
+//      }
 
-      Data result = null;
       AbstractLanguageAnalyser resource = null;
       try
       {
-         resource = pool.take();
+//         resource = pool.take();
+         resource = pool.poll(DELAY, UNIT);
+         if (resource == null) {
+            return null;
+         }
          logger.info("Executing resources {}", name);
          resource.setDocument(doc);
          resource.execute();
          resource.setDocument(null);
-         result = new Data(Types.GATE, doc.toXml());
+//         result = new Data(Types.GATE, doc.toXml());
       }
-      catch (Exception e)
-      {
-         logger.error("Error running GATE resources {}", name, e);
-         return new Data(Types.ERROR, e.getMessage());
-      }
+//      catch (Exception e)
+//      {
+//         logger.error("Error running GATE resources {}", name, e);
+//         return new Data(Types.ERROR, e.getMessage());
+//      }
       finally
       {
-         pool.add(resource);
-         Factory.deleteResource(doc);
+         if (resource != null)
+         {
+            pool.add(resource);
+         }
+//         Factory.deleteResource(doc);
       }
       logger.info("Execution complete.");
-      return result;
+      return doc;
    }
 
    public void destroy()

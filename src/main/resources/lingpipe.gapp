@@ -2,10 +2,7 @@
   <urlList class="gate.util.persistence.CollectionPersistence">
     <localList>
       <gate.util.persistence.PersistenceManager-URLHolder>
-        <urlString>$relpath$../../ANNIE</urlString>
-      </gate.util.persistence.PersistenceManager-URLHolder>
-      <gate.util.persistence.PersistenceManager-URLHolder>
-        <urlString>$relpath$../../LingPipe</urlString>
+        <urlString>$gatehome$plugins/LingPipe/</urlString>
       </gate.util.persistence.PersistenceManager-URLHolder>
     </localList>
     <collectionType>java.util.ArrayList</collectionType>
@@ -19,7 +16,10 @@
             <localMap>
               <entry>
                 <string>setsToKeep</string>
-                <null/>
+                <gate.util.persistence.CollectionPersistence>
+                  <localList/>
+                  <collectionType>java.util.ArrayList</collectionType>
+                </gate.util.persistence.CollectionPersistence>
               </entry>
               <entry>
                 <string>document</string>
@@ -27,6 +27,14 @@
               </entry>
               <entry>
                 <string>annotationTypes</string>
+                <null/>
+              </entry>
+              <entry>
+                <string>corpus</string>
+                <null/>
+              </entry>
+              <entry>
+                <string>setsToRemove</string>
                 <null/>
               </entry>
               <entry>
@@ -55,6 +63,18 @@
                 <null/>
               </entry>
               <entry>
+                <string>corpus</string>
+                <null/>
+              </entry>
+              <entry>
+                <string>annotationSetName</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>annotationType</string>
+                <string></string>
+              </entry>
+              <entry>
                 <string>languageIdFeatureName</string>
                 <null/>
               </entry>
@@ -68,7 +88,7 @@
               <entry>
                 <string>modelFileUrl</string>
                 <gate.util.persistence.PersistenceManager-URLHolder>
-                  <urlString>$relpath$models/langid-leipzig.classifier</urlString>
+                  <urlString>$gatehome$plugins/LingPipe/resources/models/langid-leipzig.classifier</urlString>
                 </gate.util.persistence.PersistenceManager-URLHolder>
               </entry>
             </localMap>
@@ -154,7 +174,7 @@
               <entry>
                 <string>modelFileUrl</string>
                 <gate.util.persistence.PersistenceManager-URLHolder>
-                  <urlString>$relpath$models/pos-en-general-brown.HiddenMarkovModel</urlString>
+                  <urlString>$gatehome$plugins/LingPipe/resources/models/pos-en-general-brown.HiddenMarkovModel</urlString>
                 </gate.util.persistence.PersistenceManager-URLHolder>
               </entry>
             </localMap>
@@ -186,7 +206,7 @@
               <entry>
                 <string>modelFileUrl</string>
                 <gate.util.persistence.PersistenceManager-URLHolder>
-                  <urlString>$relpath$models/ne-en-news-muc6.AbstractCharLmRescoringChunker</urlString>
+                  <urlString>$gatehome$plugins/LingPipe/resources/models/ne-en-news-muc6.AbstractCharLmRescoringChunker</urlString>
                 </gate.util.persistence.PersistenceManager-URLHolder>
               </entry>
             </localMap>
@@ -207,7 +227,12 @@
     </initParams>
     <features class="gate.util.persistence.MapPersistence">
       <mapType>gate.util.SimpleFeatureMapImpl</mapType>
-      <localMap/>
+      <localMap>
+        <entry>
+          <string>gate.gui.icon</string>
+          <string>application</string>
+        </entry>
+      </localMap>
     </features>
   </application>
 </gate.util.persistence.GateApplication>

@@ -29,7 +29,7 @@ public class Configuration extends Constants
    @Default("/usr/share/gate/user-gate.xml")
    public final String USER_CONFIG = null;
 
-   @Default("8")
+   @Default("1")
    public final Integer POOL_SIZE = null;
 
    public Configuration()

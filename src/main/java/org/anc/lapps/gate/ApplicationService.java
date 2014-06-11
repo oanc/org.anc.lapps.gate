@@ -3,7 +3,6 @@ package org.anc.lapps.gate;
 import gate.*;
 import gate.creole.ResourceInstantiationException;
 import gate.util.persistence.PersistenceManager;
-import org.anc.lapps.serialization.Container;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
@@ -160,12 +159,12 @@ public abstract class ApplicationService implements WebService
       {
          text = input.getPayload();
       }
-      else if (input.getDiscriminator() == Types.JSON_LD)
-      {
-         String json = input.getPayload();
-         Container container = new Container(json);
-         text = container.getText();
-      }
+//      else if (input.getDiscriminator() == Types.JSON_LD)
+//      {
+//         String json = input.getPayload();
+//         Container container = new Container(json);
+//         text = container.getText();
+//      }
       else
       {
          return DataFactory.error("Unsupported input type. Expected TEXT or JSON_LD");
@@ -179,8 +178,8 @@ public abstract class ApplicationService implements WebService
          corpus.add(document);
          controller.execute();
          corpus.clear();
-         String producer = name + ":" + Version.getVersion();
-         document.getFeatures().put(Metadata.PRODUCED_BY, producer);
+//         String producer = name + ":" + Version.getVersion();
+//         document.getFeatures().put(Metadata.PRODUCED_BY, producer);
          String xml = document.toXml();
          return new Data(Types.GATE, xml);
       }
