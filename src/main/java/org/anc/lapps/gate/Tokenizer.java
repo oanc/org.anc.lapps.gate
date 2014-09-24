@@ -3,38 +3,29 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.anc.lapps.gate.PooledGateService;
-import org.anc.lapps.gate.SimpleGateService;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
-import org.lappsgrid.vocabulary.Metadata;
 
-public class Tokenizer extends PooledGateService
+@ServiceMetadata(
+        description = "ANNIE Tokeniser from GATE.",
+        vendor = "http://www.anc.org",
+        requires_format = {
+					 "text/plain",
+					 "application/xml",
+					 "application/xml; profile=http://gate.ac.uk"
+		  },
+        produces_format = "application/xml; profile=http://gate.ac.uk",
+        produces = { "http://vocab.lappsgrid.org/Token" }
+)
+public class Tokenizer extends SimpleGateService
 {
    public Tokenizer()
    {
-      super();
+      super(Tokenizer.class);
       createResource("gate.creole.tokeniser.DefaultTokeniser");
-   }
-
-   @Override
-   public long[] requires()
-   {
-      return new long[] {
-        Types.TEXT
-      };
-   }
-
-   @Override
-   public long[] produces()
-   {
-      return new long[] {
-            Types.GATE,
-            Types.TOKEN
-      };
    }
 
    public Data execute(Data input)

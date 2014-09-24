@@ -8,7 +8,7 @@ package org.anc.lapps.gate;
 public final class State
 {
    /**
-    * This servers as a flag and as an object to synchronize on when checking
+    * This serves as a flag and as an object to synchronize on when checking
     * to see if GATE needs to be initialized.
     */
    public static Boolean initialized = false;

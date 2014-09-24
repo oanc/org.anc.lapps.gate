@@ -16,6 +16,7 @@ import org.lappsgrid.api.*;
 import org.lappsgrid.core.*;
 import org.lappsgrid.discriminator.DiscriminatorRegistry;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.discriminator.Helpers;
 
 public abstract class PooledGateService implements WebService
 {
@@ -209,7 +210,8 @@ public abstract class PooledGateService implements WebService
       Document doc = null;
       try
       {
-         long type = input.getDiscriminator();
+         String name = input.getDiscriminator();
+         long type = Helpers.type(input);
          if (type == Types.TEXT)
          {
             logger.info("Creating document from text.");
@@ -226,7 +228,6 @@ public abstract class PooledGateService implements WebService
          }
          else
          {
-            String name = DiscriminatorRegistry.get(type);
             throw new InternalException("Unknown document type : " + name);
          }
       }

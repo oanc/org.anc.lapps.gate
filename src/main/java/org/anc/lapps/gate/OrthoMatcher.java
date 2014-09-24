@@ -5,28 +5,23 @@ import gate.Factory;
 import gate.FeatureMap;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
-import org.lappsgrid.vocabulary.Metadata;
 
 /**
  * @author Keith Suderman
  */
-public class OrthoMatcher extends PooledGateService
+@ServiceMetadata(
+        description = "GATE OrthoMatcher",
+        requires = {"http://vocab.lappsgrid.org/Person"},
+        produces = {"\thttp://vocab.lappsgrid.org/NamedEntity#matches"}
+)
+public class OrthoMatcher extends SimpleGateService
 {
    public OrthoMatcher()
    {
-      super();
+      super(OrthoMatcher.class);
       createResource("gate.creole.orthomatcher.OrthoMatcher");
-   }
-
-   //TODO Determine what annotation types are returned by the OrthoMatcher.
-   public long[] produces() {
-      return new long[] { Types.GATE, Types.NAMED_ENTITES };
-   }
-
-   public long[] requires() {
-      return new long[] { Types.GATE, Types.NAMED_ENTITES };
    }
 
    public Data execute(Data input)
@@ -42,7 +37,7 @@ public class OrthoMatcher extends PooledGateService
       }
       if (document == null)
       {
-         return DataFactory.error(BUSY);
+         return DataFactory.error("This was unexpected...");
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = document.getFeatures();

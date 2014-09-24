@@ -3,43 +3,91 @@ package org.anc.lapps.gate;
 import gate.*;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
+import org.anc.resource.ResourceLoader;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.api.InternalException;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.DiscriminatorRegistry;
 import org.lappsgrid.discriminator.Types;
-import org.lappsgrid.vocabulary.Metadata;
+import org.lappsgrid.experimental.annotations.CommonMetadata;
+import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 
 /**
  * @author Keith Suderman
  */
+@ServiceMetadata(
+        vendor = "http://www.anc.org",
+        allow = "http://ns.lappsgrid.org/usage#any",
+        encoding = "UTF-8",
+        language = "en",
+        license = "http://ns.lappsgrid.org/license#apache-2.0",
+        format = "application/xml; profile=http://gate.ac.uk"
+)
 public abstract class SimpleGateService implements WebService
 {
    public static final Logger logger = LoggerFactory.getLogger(SimpleGateService.class);
    public static final Configuration K = new Configuration();
 
+   /**
+    * The GATE processing resource that make up this service. For
+    * example a service that runs a GATE PR followed by a Jape
+    * transducer to tweak the output.
+    */
    protected AbstractLanguageAnalyser[] resources = null;
+
+   /**
+    * Any exceptions thrown during initialization are saved and returned
+    * to the user in a Data object whenever they call the {@link #execute(org.lappsgrid.api.Data) execute}
+    * method.
+    */
    protected Exception savedException;
+
+   /**
+    * A human readable name for this service.
+    */
    protected String name;
 
-   // Index used when inserting resources into the resources array.
+   /**
+    * The {@link org.lappsgrid.api.Data} object returned by the
+    * {@link #getMetadata()} method.
+    */
+   protected Data metadata;
+
+   /*
+    * Index used when inserting resources into the resources array.
+    */
    private int index = 0;
 
-   public SimpleGateService()
+   // Error messages displayed to the user.
+   /** An unexpected exception was caught. */
+   protected static final String UNEXPECTED = "This is unexpected...";
+
+   /** For compatibility with the {@link org.anc.lapps.gate.PooledGateService}. */
+   protected static final String BUSY = "The service is busy. Please try again later.";
+
+   public SimpleGateService(Class<? extends WebService> theClass)
    {
-      this(1);
+      this(theClass, 1);
    }
 
-   public SimpleGateService(int size)
+   public SimpleGateService(Class<? extends WebService> theClass, int size)
    {
+      String jsonName = "metadata/" + theClass.getSimpleName() + ".json";
+      try
+      {
+         String json = ResourceLoader.loadString(jsonName);
+         metadata = DataFactory.meta(json);
+      }
+      catch (IOException e)
+      {
+         metadata = DataFactory.error("Unable to load JSON metadata.");
+      }
+
       resources = new AbstractLanguageAnalyser[size];
 
       synchronized (State.initialized) {
@@ -150,37 +198,42 @@ public abstract class SimpleGateService implements WebService
       return this.getClass().getCanonicalName() + ":" + Version.getVersion();
    }
 
+   public Data getMetadata()
+   {
+      return metadata;
+   }
+
    @Override
    public Data configure(Data config)
    {
       return DataFactory.error("Unsupported operation.");
    }
 
-   @Override
-   public Data execute(Data input)
+   public Document doExecute(Data input) throws Exception
    {
       logger.debug("Executing {}", name);
       if (savedException != null)
       {
          logger.warn("Returning saved exception: " + savedException.getMessage());
-         return new Data(Types.ERROR, getStackTrace(savedException));
+//         return new Data(Uri.ERROR, getStackTrace(savedException));
+         throw savedException;
       }
 
-      Document doc = null;
-      try
-      {
-         doc = getDocument(input);
-      }
-      catch (InternalException e)
-      {
-         logger.error("Internal exception.", e);
-         return new Data(Types.ERROR, getStackTrace(e));
-      }
+//      Document doc = null;
+//      try
+//      {
+        Document doc = getDocument(input);
+//      }
+//      catch (InternalException e)
+//      {
+//         logger.error("Internal exception.", e);
+//         return new Data(Uri.ERROR, getStackTrace(e));
+//      }
 
-      Data result = null;
+//      Data result = null;
 //      AbstractLanguageAnalyser resources = null;
-      try
-      {
+//      try
+//      {
 //         resources = pool.take();
          for (AbstractLanguageAnalyser resource : resources)
          {
@@ -196,21 +249,20 @@ public abstract class SimpleGateService implements WebService
 //            doc.getFeatures().put(Metadata.PRODUCED_BY, producedBy);
             resource.setDocument(null);
          }
-         String xml = doc.toXml();
-         Factory.deleteResource(doc);
-         result = new Data(Types.GATE, xml);
-      }
-      catch (Exception e)
-      {
-         logger.error("Error running GATE resources {}", name, e);
-         return new Data(Types.ERROR, getStackTrace(e));
-      }
-      finally
-      {
-         Factory.deleteResource(doc);
-      }
+//         String xml = doc.toXml();
+//         result = new Data(Uri.GATE, xml);
+//      }
+//      catch (Exception e)
+//      {
+//         logger.error("Error running GATE resources {}", name, e);
+//         return new Data(Uri.ERROR, getStackTrace(e));
+//      }
+//      finally
+//      {
+//         Factory.deleteResource(doc);
+//      }
       logger.info("Execution complete.");
-      return result;
+      return doc;
    }
 
    Document getDocument(Data input) throws InternalException
@@ -218,7 +270,8 @@ public abstract class SimpleGateService implements WebService
       Document doc = null;
       try
       {
-         long type = input.getDiscriminator();
+         String uri = input.getDiscriminator();
+         long type = DiscriminatorRegistry.get(uri);
          if (type == Types.TEXT)
          {
             logger.info("Creating document from text.");

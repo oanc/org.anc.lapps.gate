@@ -4,48 +4,58 @@ import gate.*;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
-import org.lappsgrid.vocabulary.Contents;
-import org.lappsgrid.vocabulary.Metadata;
 
 import java.util.Iterator;
 
 /**
  * @author Keith Suderman
  */
-public class NamedEntityRecognizer extends PooledGateService
+@ServiceMetadata(
+        description = "GATE Named Entity Recognizer",
+        requires = {"http://vocab.lappsgrid.org/Token"},
+        produces = {
+					 "http://vocab.lappsgrid.org/Date",
+					 "http://vocab.lappsgrid.org/Person",
+					 "http://vocab.lappsgrid.org/Location",
+					 "http://vocab.lappsgrid.org/Organization"}
+)
+public class NamedEntityRecognizer extends SimpleGateService
 {
    public NamedEntityRecognizer()
    {
-      super();
+      super(NamedEntityRecognizer.class);
       createResource("gate.creole.ANNIETransducer");
    }
 
-   public long[] produces()
-   {
-      return new long[] { Types.GATE, Types.PERSON, Types.LOCATION, Types.ORGANIZATION };
-   }
-
-   public long[] requires()
-   {
-      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.LOOKUP };
-   }
+//   public long[] produces()
+//   {
+//      return new long[] { Types.GATE, Types.PERSON, Types.LOCATION, Types.ORGANIZATION };
+//   }
+//
+//   public long[] requires()
+//   {
+//      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.LOOKUP };
+//   }
 
    public Data execute(Data input)
    {
       Document document = null;
       try
       {
-         document = doExecute(input);
+         document = super.doExecute(input);
       }
       catch (Exception e)
       {
          return DataFactory.error("Unable to execute the Named Entity Recognizer.", e);
       }
+
       if (document == null)
       {
-         return DataFactory.error(BUSY);
+         return DataFactory.error("This was unexpected...");
       }
+
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = document.getFeatures();
       Integer step = (Integer) features.get("lapps:step");

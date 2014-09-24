@@ -4,6 +4,7 @@ import org.anc.io.UTF8Writer;
 import org.junit.Test;
 import org.lappsgrid.api.*;
 import org.lappsgrid.client.DataSourceClient;
+import org.lappsgrid.discriminator.Uri;
 
 import javax.xml.rpc.ServiceException;
 import java.io.*;
@@ -37,7 +38,13 @@ public class GateDriver
       String username = "operator1";
       String password = "operator1";
       DataSourceClient masc = new DataSourceClient(url, username, password);
-      String[] keys = masc.list();
+      Data keyData = masc.list();
+      if (Uri.ERROR.equals(keyData.getDiscriminator()))
+      {
+         System.out.println("Unable to get index from data source.");
+         return;
+      }
+      String[] keys = keyData.getPayload().split("\\s+");
       for (String key : keys)
       {
          System.out.println("Processing " + key);
