@@ -14,7 +14,6 @@ import org.lappsgrid.discriminator.Uri;
 /**
  * @author Keith Suderman
  */
-@Ignore
 public class SentenceSplitterTest
 {
    private WebService service;
@@ -36,12 +35,14 @@ public class SentenceSplitterTest
       service = null;
    }
 
-   @Ignore
+   @Test
    public void testMetadata()
    {
-      WebService service = new SentenceSplitter();
+//      service = new SentenceSplitter();
       Data data = service.getMetadata();
-      assertTrue(Uri.META.equals(data.getDiscriminator()));
+		System.out.println(data.getDiscriminator());
+		System.out.println(data.getPayload());
+		assertTrue(Uri.META.equals(data.getDiscriminator()));
 //      ServiceMetadata metadata = new ServiceMetadata(data.getPayload());
 //      System.out.println(metadata.toPrettyJson());
    }

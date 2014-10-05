@@ -17,7 +17,7 @@ import java.util.*;
  */
 @ServiceMetadata(
         description = "Coreferencer from GATE",
-        requires = { "http://vocab.lappsgrid.org/Person"},
+        requires = { "person"},
         produces = { "http://vocab.lappsgrid.org/NamedEntity#matches" }
 )
 public class Coreferencer extends SimpleGateService

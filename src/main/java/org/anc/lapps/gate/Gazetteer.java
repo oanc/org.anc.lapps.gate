@@ -13,8 +13,8 @@ import org.lappsgrid.vocabulary.Annotations;
  */
 @ServiceMetadata(
       description = "GATE Gazetteer",
-      requires = { "http://vocab.lappsgrid.org/Token" },
-      produces = { "http://vocab.lappsgrid.org/Lookup" }
+      requires = "http://vocab.lappsgrid.org/Token",
+      produces = "http://vocab.lappsgrid.org/Lookup"
 )
 public class Gazetteer extends SimpleGateService
 {

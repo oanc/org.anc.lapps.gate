@@ -13,9 +13,8 @@ import org.slf4j.LoggerFactory;
 
 @ServiceMetadata(
         description = "GATE Sentence Splitter",
-        vendor = "http://www.anc.org",
-        requires = {"http://vocab.lappsgrid.org/Token"},
-        produces = {"http://vocab.lappsgrid.org/Sentence"}
+        requires = "token",
+        produces = "sentence"
 )
 public class SentenceSplitter extends SimpleGateService
 {
@@ -29,7 +28,7 @@ public class SentenceSplitter extends SimpleGateService
    
    public Data execute(Data input)
    {
-      Document document = null;
+      Document document;
       try
       {
          document = doExecute(input);

@@ -11,14 +11,12 @@ import org.lappsgrid.vocabulary.Contents;
 
 @ServiceMetadata(
         description = "ANNIE Tokeniser from GATE.",
-        vendor = "http://www.anc.org",
         requires_format = {
-					 "text/plain",
+					 "text",
 					 "application/xml",
-					 "application/xml; profile=http://gate.ac.uk"
+					 "gate"
 		  },
-        produces_format = "application/xml; profile=http://gate.ac.uk",
-        produces = { "http://vocab.lappsgrid.org/Token" }
+        produces = "http://vocab.lappsgrid.org/Token"
 )
 public class Tokenizer extends SimpleGateService
 {

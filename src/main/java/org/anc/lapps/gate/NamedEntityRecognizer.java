@@ -13,13 +13,13 @@ import java.util.Iterator;
  * @author Keith Suderman
  */
 @ServiceMetadata(
-        description = "GATE Named Entity Recognizer",
-        requires = {"http://vocab.lappsgrid.org/Token"},
-        produces = {
-					 "http://vocab.lappsgrid.org/Date",
-					 "http://vocab.lappsgrid.org/Person",
-					 "http://vocab.lappsgrid.org/Location",
-					 "http://vocab.lappsgrid.org/Organization"}
+	description = "GATE Named Entity Recognizer",
+	requires = {"http://vocab.lappsgrid.org/Token"},
+	produces = {
+			 "http://vocab.lappsgrid.org/Date",
+			 "http://vocab.lappsgrid.org/Person",
+			 "http://vocab.lappsgrid.org/Location",
+			 "http://vocab.lappsgrid.org/Organization"}
 )
 public class NamedEntityRecognizer extends SimpleGateService
 {
@@ -93,15 +93,15 @@ public class NamedEntityRecognizer extends SimpleGateService
       features.put("lapps:step", step + 1);
       if (hasLocation)
       {
-         features.put("lapps:" + Annotations.NE_LOCATION, step + " " + producer + " ner:annie");
+         features.put("lapps:" + Annotations.LOCATION, step + " " + producer + " ner:annie");
       }
       if (hasPerson)
       {
-         features.put("lapps:" + Annotations.NE_PERSON, step + " " + producer + " ner:annie");
+         features.put("lapps:" + Annotations.PERSON, step + " " + producer + " ner:annie");
       }
       if (hasOrganization)
       {
-         features.put("lapps:" + Annotations.NE_ORG, step + " " + producer + " ner:annie");
+         features.put("lapps:" + Annotations.ORGANIZATION, step + " " + producer + " ner:annie");
       }
       Data result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);

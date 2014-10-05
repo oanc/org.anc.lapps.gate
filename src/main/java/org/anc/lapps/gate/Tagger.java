@@ -11,7 +11,7 @@ import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
 
 @ServiceMetadata(
-        description = "GATE Part of Speech Tagger",
+		  description = "GATE Part of Speech Tagger",
         requires = {"http://vocab.lappsgrid.org/Token"},
         produces = {"http://vocab.lappsgrid.org/Token#pos"}
 )

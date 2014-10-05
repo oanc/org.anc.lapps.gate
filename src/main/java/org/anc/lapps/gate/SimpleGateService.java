@@ -3,7 +3,7 @@ package org.anc.lapps.gate;
 import gate.*;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
-import org.anc.resource.ResourceLoader;
+import org.anc.io.UTF8Reader;
 import org.lappsgrid.api.Data;
 import org.lappsgrid.api.InternalException;
 import org.lappsgrid.api.WebService;
@@ -11,7 +11,6 @@ import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.discriminator.DiscriminatorRegistry;
 import org.lappsgrid.discriminator.Types;
 import org.lappsgrid.experimental.annotations.CommonMetadata;
-import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,13 +19,12 @@ import java.io.*;
 /**
  * @author Keith Suderman
  */
-@ServiceMetadata(
+@CommonMetadata(
         vendor = "http://www.anc.org",
-        allow = "http://ns.lappsgrid.org/usage#any",
         encoding = "UTF-8",
         language = "en",
-        license = "http://ns.lappsgrid.org/license#apache-2.0",
-        format = "application/xml; profile=http://gate.ac.uk"
+        license = "apache2",
+        format = "gate"
 )
 public abstract class SimpleGateService implements WebService
 {
@@ -77,11 +75,29 @@ public abstract class SimpleGateService implements WebService
 
    public SimpleGateService(Class<? extends WebService> theClass, int size)
    {
-      String jsonName = "metadata/" + theClass.getSimpleName() + ".json";
+      String jsonName = "metadata/" + theClass.getName() + ".json";
       try
       {
-         String json = ResourceLoader.loadString(jsonName);
-         metadata = DataFactory.meta(json);
+			logger.debug("Loading metadata from{}", jsonName);
+			ClassLoader loader = Thread.currentThread().getContextClassLoader();
+			if (loader == null)
+			{
+				loader = SimpleGateService.class.getClassLoader();
+			}
+			InputStream stream = loader.getResourceAsStream(jsonName);
+			if (stream == null)
+			{
+				logger.error("Unable to load metadata from {}", jsonName);
+				metadata = DataFactory.error("Unable to load metadata from " + jsonName);
+			}
+			else
+			{
+				UTF8Reader reader = new UTF8Reader(stream);
+				String json = reader.readString();
+				metadata = DataFactory.meta(json);
+				reader.close();
+//				String json = ResourceLoader.loadString(jsonName);
+			}
       }
       catch (IOException e)
       {
