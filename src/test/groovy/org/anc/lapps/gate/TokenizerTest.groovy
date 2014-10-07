@@ -1,6 +1,5 @@
 package org.anc.lapps.gate
 
-import org.anc.lapps.serialization.Container
 import org.junit.Ignore
 import org.junit.Test
 import org.lappsgrid.api.Data

@@ -78,7 +78,7 @@ public abstract class SimpleGateService implements WebService
       String jsonName = "metadata/" + theClass.getName() + ".json";
       try
       {
-			logger.debug("Loading metadata from{}", jsonName);
+			logger.debug("Loading metadata from {}", jsonName);
 			ClassLoader loader = Thread.currentThread().getContextClassLoader();
 			if (loader == null)
 			{
