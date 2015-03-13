@@ -3,27 +3,26 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.lappsgrid.api.Data;
-import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
-import org.lappsgrid.vocabulary.Contents;
-import org.lappsgrid.vocabulary.Metadata;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Keith Suderman
  */
-public class NounPhraseChunker extends PooledGateService
+@ServiceMetadata(
+        description = "GATE Noun Phrase Chunker",
+        requires = {"http://vocab.lappsgrid.org/Token","http://vocab.lappsgrid.org/Token#pos"},
+        produces = {"http://vocab.lappsgrid.org/NounChunk"}
+)
+public class NounPhraseChunker extends SimpleGateService
 {
 //   private Logger logger = LoggerFactory.getLogger(NounPhraseChunker.class);
 
    public NounPhraseChunker()
    {
 //      logger.info("Creating the NounPhraseChunker.");
-      super();
+      super(NounPhraseChunker.class);
       createResource("mark.chunking.GATEWrapper");
    }
 
@@ -37,17 +36,17 @@ public class NounPhraseChunker extends PooledGateService
 //      return input;
 //   }
 
-   public long[] produces()
-   {
-      return new long[] { Types.GATE, Types.NOUN_CHUNK };
-   }
+//   public long[] produces()
+//   {
+//      return new long[] { Types.GATE, Types.NOUN_CHUNK };
+//   }
+//
+//   public long[] requires()
+//   {
+//      return new long[] { Types.GATE, Types.TOKEN, Types.POS };
+//   }
 
-   public long[] requires()
-   {
-      return new long[] { Types.GATE, Types.TOKEN, Types.POS };
-   }
-
-   public Data execute(Data input)
+   public String execute(String input)
    {
       Document document = null;
       try
@@ -60,7 +59,7 @@ public class NounPhraseChunker extends PooledGateService
       }
       if (document == null)
       {
-         return DataFactory.error(BUSY);
+         return DataFactory.error("This was unexpected.");
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = document.getFeatures();
@@ -70,7 +69,7 @@ public class NounPhraseChunker extends PooledGateService
       }
       features.put("lapps:step", step + 1);
       features.put("lapps:" + Annotations.NCHUNK, step + " " + producer + " chunk:annie");
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }
