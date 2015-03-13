@@ -133,6 +133,12 @@
             <version>${lapps.client.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.anc.json</groupId>
+            <artifactId>validator</artifactId>
+            <version>1.0.1</version>
+            <scope>test</scope>
+        </dependency>
         <!--
         <dependency>
             <groupId>org.anc.lapps</groupId>

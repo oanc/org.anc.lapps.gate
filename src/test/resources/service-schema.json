@@ -1,0 +1,80 @@
+{
+    "title": "LAPPS Service Metadata",
+    "description": "Metadata about LAPPS services",
+    "type": "object",
+    "definitions": {
+        "encoding": {
+            "type": "string"
+        },
+        "uri": {
+            "type": "string",
+            "format": "uri"
+        },
+        "arrayOfStrings": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "io": {
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "$ref": "#/definitions/arrayOfStrings"
+                },
+                "encoding": {
+                    "$ref": "#/definitions/encoding"
+                },
+                "format": {
+                    "$ref": "#/definitions/arrayOfStrings"
+                },
+                "language": {
+                    "$ref": "#/definitions/arrayOfStrings"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false,
+    "properties": {
+        "@context": {
+            "$ref": "#/definitions/uri"
+        },
+        "@vocab": {
+            "$ref": "#/definitions/uri"
+        },
+        "allow": {
+            "$ref": "#/definitions/uri"
+        },
+        "$schema": {
+            "$ref": "#/definitions/uri"
+        },
+        "license": {
+            "$ref": "#/definitions/uri"
+        },
+        "description": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "produces": {
+            "$ref": "#/definitions/io"
+        },
+        "requires": {
+            "$ref": "#/definitions/io"
+        },
+        "vendor": {
+            "$ref": "#/definitions/uri"
+        },
+        "version": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "name",
+        "produces",
+        "requires",
+        "version"
+    ]
+}
