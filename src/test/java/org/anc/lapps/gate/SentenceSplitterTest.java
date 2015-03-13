@@ -6,9 +6,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.lappsgrid.api.Data;
 import org.lappsgrid.api.WebService;
-import org.lappsgrid.discriminator.Uri;
+import org.lappsgrid.metadata.ServiceMetadata;
+import org.lappsgrid.serialization.Data;
+import org.lappsgrid.serialization.Serializer;
+
+import static org.lappsgrid.discriminator.Discriminators.Uri;
 //import org.lappsgrid.metadata.ServiceMetadata;
 
 /**
@@ -39,10 +42,11 @@ public class SentenceSplitterTest
    public void testMetadata()
    {
 //      service = new SentenceSplitter();
-      Data data = service.getMetadata();
+      String json = service.getMetadata();
+		Data<String> data = Serializer.parse(json, Data.class);
 		System.out.println(data.getDiscriminator());
 		System.out.println(data.getPayload());
-		assertTrue(Uri.META.equals(data.getDiscriminator()));
+		assertTrue(data.getPayload(), Uri.META.equals(data.getDiscriminator()));
 //      ServiceMetadata metadata = new ServiceMetadata(data.getPayload());
 //      System.out.println(metadata.toPrettyJson());
    }

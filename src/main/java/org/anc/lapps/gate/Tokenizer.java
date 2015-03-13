@@ -3,7 +3,6 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
@@ -13,7 +12,7 @@ import org.lappsgrid.vocabulary.Contents;
         description = "ANNIE Tokeniser from GATE.",
         requires_format = {
 					 "text",
-					 "application/xml",
+					 "xml",
 					 "gate"
 		  },
         produces = "http://vocab.lappsgrid.org/Token"
@@ -26,7 +25,7 @@ public class Tokenizer extends SimpleGateService
       createResource("gate.creole.tokeniser.DefaultTokeniser");
    }
 
-   public Data execute(Data input)
+   public String execute(String input)
    {
       Document document = null;
       try
@@ -51,7 +50,7 @@ public class Tokenizer extends SimpleGateService
       features.put("lapps:step", step + 1);
       features.put("lapps:" + Annotations.TOKEN, step + " " + producer + " " + Contents.Tokenizations.ANNIE);
 
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }

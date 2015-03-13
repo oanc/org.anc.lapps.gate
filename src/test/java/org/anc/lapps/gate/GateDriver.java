@@ -4,10 +4,15 @@ import org.anc.io.UTF8Writer;
 import org.junit.Test;
 import org.lappsgrid.api.*;
 import org.lappsgrid.client.DataSourceClient;
-import org.lappsgrid.discriminator.Uri;
+import org.lappsgrid.core.DataFactory;
+import org.lappsgrid.serialization.Data;
+import org.lappsgrid.serialization.Serializer;
+
+import static org.lappsgrid.discriminator.Discriminators.Uri;
 
 import javax.xml.rpc.ServiceException;
 import java.io.*;
+import java.util.List;
 
 
 public class GateDriver
@@ -34,30 +39,44 @@ public class GateDriver
       Tokenizer tokenizer = new Tokenizer();
       Tagger tagger = new Tagger();
 
-      String url = "http://localhost:8080/service_manager/invoker/lapps:MASC_TEXT";
+//      String url = "http://localhost:8080/service_manager/invoker/lapps:MASC_TEXT";
+		String url = "http://localhost:9080/MascDataSource/2.0.0-SNAPSHOT/services/MascTextSource";
       String username = "operator1";
       String password = "operator1";
-      DataSourceClient masc = new DataSourceClient(url, username, password);
-      Data keyData = masc.list();
-      if (Uri.ERROR.equals(keyData.getDiscriminator()))
+      DataSourceClient masc = new DataSourceClient(url, null, null);
+		masc.setToken("123abc");
+//		String json = DataFactory.list();
+//		json = masc.execute(json);
+//		Data<String> data = Serializer.parse(json, Data.class);
+//		if (Uri.ERROR.equals(data.getDiscriminator())) {
+//			System.out.println("ERROR: " + data.getPayload());
+//			return;
+//		}
+//		System.out.println("Response is a " + data.getDiscriminator());
+//		if (true) return;
+
+		List<String> keys = masc.list(1,2);
+      if (keys == null || keys.size() == 0)
       {
          System.out.println("Unable to get index from data source.");
          return;
       }
-      String[] keys = keyData.getPayload().split("\\s+");
+//      String[] keys = keyData.getPayload().split("\\s+");
+		String json =  null;
       for (String key : keys)
       {
          System.out.println("Processing " + key);
-         Data data = masc.get(key);
+         json = masc.get(key);
          System.out.println("   splitting");
-         data = splitter.execute(data);
+         json = splitter.execute(json);
          System.out.println("   tokenizing");
-         data = tokenizer.execute(data);
+         json = tokenizer.execute(json);
          System.out.println("   tagging");
-         data = tagger.execute(data);
+         json = tagger.execute(json);
          File outputFile = new File(destination, key + ".xml");
          UTF8Writer writer = new UTF8Writer(outputFile);
-         writer.write(data.getPayload());
+			Data data = Serializer.parse(json, Data.class);
+         writer.write(data.getPayload().toString());
          writer.close();
          System.out.println();
       }

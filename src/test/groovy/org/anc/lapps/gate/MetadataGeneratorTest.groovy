@@ -5,8 +5,8 @@ import org.junit.Test
 import org.lappsgrid.discriminator.Discriminator
 import org.lappsgrid.discriminator.DiscriminatorRegistry
 import org.lappsgrid.metadata.*
-import static org.lappsgrid.metadata.AnnotationType.*
-import static org.lappsgrid.metadata.ContentType.*
+//import static org.lappsgrid.metadata.AnnotationType.*
+//import static org.lappsgrid.metadata.ContentType.*
 
 //import spock.lang.Specification
 
@@ -35,9 +35,9 @@ class MetadataGeneratorTest {
         return metadata
     }
 
-    AnnotationType type(String name) {
-        return new AnnotationType("http://vocab.lappsgrid.org/$name")
-    }
+//    AnnotationType type(String name) {
+//        return new AnnotationType("http://vocab.lappsgrid.org/$name")
+//    }
 
     @Ignore
     void run() {

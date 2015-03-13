@@ -1,7 +1,14 @@
 package org.anc.lapps.gate;
 
 import gate.*;
-import org.slf4j.*;
+import gate.creole.AbstractLanguageAnalyser;
+import gate.creole.ResourceInstantiationException;
+import org.lappsgrid.api.InternalException;
+import org.lappsgrid.api.WebService;
+import org.lappsgrid.serialization.Data;
+import org.lappsgrid.serialization.Serializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,14 +16,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import gate.creole.AbstractLanguageAnalyser;
-import gate.creole.ResourceInstantiationException;
-
-import org.lappsgrid.api.*;
-import org.lappsgrid.core.*;
-import org.lappsgrid.discriminator.DiscriminatorRegistry;
-import org.lappsgrid.discriminator.Types;
-import org.lappsgrid.discriminator.Helpers;
+import static org.lappsgrid.discriminator.Discriminators.Uri;
 
 public abstract class PooledGateService implements WebService
 {
@@ -139,13 +139,13 @@ public abstract class PooledGateService implements WebService
       }
    }
    
-   @Override
-   public Data configure(Data config)
-   {
-      return DataFactory.error("Unsupported operation.");
-   }
+//   @Override
+//   public St configure(Data config)
+//   {
+//      return DataFactory.error("Unsupported operation.");
+//   }
    
-   public Document doExecute(Data input) throws Exception
+   public Document doExecute(String input) throws Exception
    {
       logger.debug("Executing {}", name);
       if (savedException != null)
@@ -205,19 +205,21 @@ public abstract class PooledGateService implements WebService
       }
    }
 
-   Document getDocument(Data input) throws InternalException
+   Document getDocument(String json) throws InternalException
    {
       Document doc = null;
       try
       {
-         String name = input.getDiscriminator();
-         long type = Helpers.type(input);
-         if (type == Types.TEXT)
+			Data<String> input = Serializer.parse(json, Data.class);
+
+
+         String uri = input.getDiscriminator();
+         if (uri.equals(Uri.TEXT))
          {
             logger.info("Creating document from text.");
             doc = Factory.newDocument(input.getPayload());
          }
-         else if (type == Types.GATE)
+         else if (uri.equals(Uri.GATE))
          {
             logger.info("Creating document from GATE document.");
             doc = (Document) 

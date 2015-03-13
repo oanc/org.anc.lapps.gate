@@ -20,13 +20,13 @@
     <properties>
         <gate.version>7.1</gate.version>
         <anc.commons.version>3.5.0</anc.commons.version>
-        <lapps.api.version>2.0.0-SNAPSHOT</lapps.api.version>
+        <lapps.api.version>2.0.0</lapps.api.version>
         <lapps.core.version>2.0.0-SNAPSHOT</lapps.core.version>
-        <lapps.meta.version>1.0.0-SNAPSHOT</lapps.meta.version>
+        <lapps.meta.version>1.0.0</lapps.meta.version>
         <lapps.client.version>2.0.0-SNAPSHOT</lapps.client.version>
         <lapps.vocabulary.version>1.0.0-SNAPSHOT</lapps.vocabulary.version>
-        <lapps.discriminator.version>2.0.0-SNAPSHOT</lapps.discriminator.version>
-        <lapps.serialization.version>1.0.0-SNAPSHOT</lapps.serialization.version>
+        <lapps.discriminator.version>2.0.1</lapps.discriminator.version>
+        <lapps.serialization.version>2.0.0-SNAPSHOT</lapps.serialization.version>
     </properties>
     <build>
         <finalName>GateServices#${project.version}</finalName>
@@ -87,7 +87,7 @@
         <dependency>
             <groupId>org.lappsgrid.experimental</groupId>
             <artifactId>annotations</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -105,6 +105,8 @@
             <artifactId>core</artifactId>
             <version>${lapps.core.version}</version>
         </dependency>
+        <!--
+        -->
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>vocabulary</artifactId>
@@ -129,6 +131,7 @@
             <groupId>org.lappsgrid</groupId>
             <artifactId>client</artifactId>
             <version>${lapps.client.version}</version>
+            <scope>test</scope>
         </dependency>
         <!--
         <dependency>

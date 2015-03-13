@@ -3,7 +3,6 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
@@ -25,7 +24,7 @@ public class VerbPhraseChunker extends SimpleGateService
       createResource("gate.creole.VPChunker");
    }
 
-   public Data execute(Data input)
+   public String execute(String input)
    {
       Document document = null;
       try
@@ -48,7 +47,7 @@ public class VerbPhraseChunker extends SimpleGateService
       }
       features.put("lapps:step", step + 1);
       features.put("lapps:" + Annotations.VCHUNK, step + producer + " " + Contents.Chunks.VERBS);
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }

@@ -4,17 +4,18 @@ import gate.*;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
 import org.anc.io.UTF8Reader;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.api.InternalException;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.DiscriminatorRegistry;
-import org.lappsgrid.discriminator.Types;
 import org.lappsgrid.experimental.annotations.CommonMetadata;
+import org.lappsgrid.serialization.Data;
+import org.lappsgrid.serialization.Serializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+
+import static org.lappsgrid.discriminator.Discriminators.Uri;
 
 /**
  * @author Keith Suderman
@@ -40,7 +41,7 @@ public abstract class SimpleGateService implements WebService
 
    /**
     * Any exceptions thrown during initialization are saved and returned
-    * to the user in a Data object whenever they call the {@link #execute(org.lappsgrid.api.Data) execute}
+    * to the user whenever they call the {@link #execute execute}
     * method.
     */
    protected Exception savedException;
@@ -51,10 +52,9 @@ public abstract class SimpleGateService implements WebService
    protected String name;
 
    /**
-    * The {@link org.lappsgrid.api.Data} object returned by the
-    * {@link #getMetadata()} method.
+    * The JSON metadata for the service.
     */
-   protected Data metadata;
+   protected String metadata;
 
    /*
     * Index used when inserting resources into the resources array.
@@ -214,18 +214,18 @@ public abstract class SimpleGateService implements WebService
       return this.getClass().getCanonicalName() + ":" + Version.getVersion();
    }
 
-   public Data getMetadata()
+   public String getMetadata()
    {
       return metadata;
    }
 
-   @Override
-   public Data configure(Data config)
-   {
-      return DataFactory.error("Unsupported operation.");
-   }
+//   @Override
+//   public Data configure(Data config)
+//   {
+//      return DataFactory.error("Unsupported operation.");
+//   }
 
-   public Document doExecute(Data input) throws Exception
+   public Document doExecute(String input) throws Exception
    {
       logger.debug("Executing {}", name);
       if (savedException != null)
@@ -281,31 +281,31 @@ public abstract class SimpleGateService implements WebService
       return doc;
    }
 
-   Document getDocument(Data input) throws InternalException
+   Document getDocument(String input) throws InternalException
    {
+		Data<String> data = Serializer.parse(input, Data.class);
       Document doc = null;
       try
       {
-         String uri = input.getDiscriminator();
-         long type = DiscriminatorRegistry.get(uri);
-         if (type == Types.TEXT)
+         String uri = data.getDiscriminator();
+         if (uri.equals(Uri.TEXT))
          {
             logger.info("Creating document from text.");
-            doc = Factory.newDocument(input.getPayload());
+            doc = Factory.newDocument(data.getPayload());
          }
-         else if (type == Types.GATE)
+         else if (uri.equals(Uri.GATE))
          {
             logger.info("Creating document from GATE document.");
             doc = (Document)
                     Factory.createResource("gate.corpora.DocumentImpl",
                             Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-                                    input.getPayload(),
+                                    data.getPayload(),
                                     gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml"));
          }
          else
          {
-            String name = DiscriminatorRegistry.get(type);
-            throw new InternalException("Unknown document type : " + name);
+//            String name = DiscriminatorRegistry.get(type);
+            throw new InternalException("Unknown document type : " + uri);
          }
       }
       catch (ResourceInstantiationException ex)

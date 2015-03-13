@@ -3,14 +3,8 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.anc.resource.ResourceLoader;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.experimental.annotations.ServiceMetadata;
-import org.lappsgrid.vocabulary.Annotations;
-
-import java.io.IOException;
-import java.util.*;
 
 /**
  * @author Keith Suderman
@@ -39,12 +33,12 @@ public class Coreferencer extends SimpleGateService
 //   }
 
    @Override
-   public Data execute(Data input)
+   public String execute(String json)
    {
       Document document = null;
       try
       {
-         document = doExecute(input);
+         document = doExecute(json);
       }
       catch (Exception e)
       {
@@ -61,11 +55,11 @@ public class Coreferencer extends SimpleGateService
          step = 1;
       }
       features.put("lapps:step", step + 1);
-      features.put("lapps:" + Annotations.PRONOMINAL_CORREFERNCE, step + " " + producer + " coref:gate");
+      features.put("lapps:PRONOMINAL_CORREFERNCE", step + " " + producer + " coref:gate");
 //      features.put(Metadata.Contains.TYPE, "coref:gate");
 //      features.put(Metadata.Contains.PRODUCER, producer);
 //      features.put("annotation", Annotations.COREFERENCE);
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }

@@ -3,7 +3,6 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
@@ -24,7 +23,7 @@ public class OrthoMatcher extends SimpleGateService
       createResource("gate.creole.orthomatcher.OrthoMatcher");
    }
 
-   public Data execute(Data input)
+   public String execute(String input)
    {
       Document document = null;
       try
@@ -47,7 +46,7 @@ public class OrthoMatcher extends SimpleGateService
       }
       features.put("lapps:step", step + 1);
       features.put("lapps:" + Annotations.NOMINAL_COREFERENCE, step + " " + producer + " coref:annie");
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }

@@ -3,9 +3,7 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
 import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
@@ -23,23 +21,7 @@ public class Tagger extends SimpleGateService
       createResource("gate.creole.POSTagger");
    }
 
-   public long[] requires()
-   {
-      return new long[] {
-            Types.GATE,
-            Types.TOKEN
-      };
-   }
-   
-   public long[] produces()
-   {
-      return new long[] {
-            Types.GATE,
-            Types.POS
-         };      
-   }
-
-   public Data execute(Data input)
+   public String execute(String input)
    {
       Document document = null;
       try
@@ -62,7 +44,7 @@ public class Tagger extends SimpleGateService
       }
       features.put("lapps:step", step + 1);
       features.put("lapps:" + Annotations.PART_OF_SPEECH, step + " " + producer + " " + Contents.TagSets.GATE);
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }

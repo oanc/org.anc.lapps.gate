@@ -1,9 +1,7 @@
 package org.anc.lapps.gate;
 
 import gate.*;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
 import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 
@@ -39,7 +37,7 @@ public class NamedEntityRecognizer extends SimpleGateService
 //      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.LOOKUP };
 //   }
 
-   public Data execute(Data input)
+   public String execute(String input)
    {
       Document document = null;
       try
@@ -103,7 +101,7 @@ public class NamedEntityRecognizer extends SimpleGateService
       {
          features.put("lapps:" + Annotations.ORGANIZATION, step + " " + producer + " ner:annie");
       }
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }
