@@ -11,6 +11,8 @@ import org.lappsgrid.metadata.ServiceMetadata;
 import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.Serializer;
 
+import java.util.Map;
+
 import static org.lappsgrid.discriminator.Discriminators.Uri;
 //import org.lappsgrid.metadata.ServiceMetadata;
 
@@ -43,10 +45,14 @@ public class SentenceSplitterTest
    {
 //      service = new SentenceSplitter();
       String json = service.getMetadata();
-		Data<String> data = Serializer.parse(json, Data.class);
+		Data<Map> data = Serializer.parse(json, Data.class);
 		System.out.println(data.getDiscriminator());
-		System.out.println(data.getPayload());
-		assertTrue(data.getPayload(), Uri.META.equals(data.getDiscriminator()));
+      ServiceMetadata metadata = new ServiceMetadata(data.getPayload());
+      assertEquals(metadata.getVersion(), Version.getVersion());
+      assertEquals(metadata.getVendor(), "http://www.anc.org");
+      assertEquals(metadata.getName(), SentenceSplitter.class.getCanonicalName());
+//		System.out.println(data.getPayload());
+		assertTrue(data.getPayload().toString(), Uri.META.equals(data.getDiscriminator()));
 //      ServiceMetadata metadata = new ServiceMetadata(data.getPayload());
 //      System.out.println(metadata.toPrettyJson());
    }

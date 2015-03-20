@@ -10,6 +10,7 @@ import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.Serializer;
 
 import java.net.URL;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.lappsgrid.discriminator.Discriminators.Uri;
@@ -102,10 +103,10 @@ public class MetadataTests
 		WebService service = serviceClass.newInstance();
 		String json = service.getMetadata();
 		assertNotNull(json);
-		Data<String> data = Serializer.parse(json, Data.class);
+		Data<Map> data = Serializer.parse(json, Data.class);
 		assertEquals(data.getDiscriminator(), Uri.META);
-		validate(data.getPayload());
-		ServiceMetadata metadata = Serializer.parse(data.getPayload(), ServiceMetadata.class);
+		validate(data.asJson());
+		ServiceMetadata metadata = new ServiceMetadata(data.getPayload());
 		assertNotNull(metadata);
 		assertEquals(metadata.getVersion(), Version.getVersion());
 		assertEquals(metadata.getVendor(), "http://www.anc.org");

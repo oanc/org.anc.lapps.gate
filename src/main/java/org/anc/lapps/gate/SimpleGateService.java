@@ -8,6 +8,7 @@ import org.lappsgrid.api.InternalException;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.experimental.annotations.CommonMetadata;
+import org.lappsgrid.metadata.ServiceMetadata;
 import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.Serializer;
 import org.slf4j.Logger;
@@ -94,7 +95,8 @@ public abstract class SimpleGateService implements WebService
 			{
 				UTF8Reader reader = new UTF8Reader(stream);
 				String json = reader.readString();
-				metadata = DataFactory.meta(json);
+            ServiceMetadata metadata = Serializer.parse(json, ServiceMetadata.class);
+				this.metadata = new Data<ServiceMetadata>(Uri.META, metadata).asJson();
 				reader.close();
 //				String json = ResourceLoader.loadString(jsonName);
 			}
