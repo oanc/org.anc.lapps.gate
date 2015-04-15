@@ -295,9 +295,9 @@ public abstract class SimpleGateService implements WebService
             logger.info("Creating document from text.");
             doc = Factory.newDocument(data.getPayload());
          }
-         else if (uri.equals(Uri.GATE))
+         else if (uri.equals(Uri.GATE) || uri.equals(Uri.XML))
          {
-            logger.info("Creating document from GATE document.");
+            logger.info("Creating document from GATE/XML document.");
             doc = (Document)
                     Factory.createResource("gate.corpora.DocumentImpl",
                             Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
