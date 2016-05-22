@@ -12,6 +12,7 @@ import org.lappsgrid.annotations.CommonMetadata;
 import org.lappsgrid.metadata.ServiceMetadata;
 import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.Serializer;
+import org.lappsgrid.serialization.lif.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -297,7 +298,9 @@ public abstract class SimpleGateService implements WebService
             doc = Factory.newDocument(data.getPayload());
          }
          else if (uri.equals(Uri.LAPPS)) {
-
+			DataContainer dc = Serializer.parse(input, DataContainer.class);
+			Container container = dc.getPayload();
+			 doc = Factory.newDocument(container.getText());
          }
          else if (uri.equals(Uri.GATE) || uri.equals(Uri.XML))
          {
@@ -329,3 +332,5 @@ public abstract class SimpleGateService implements WebService
       return stringWriter.toString();
    }
 }
+
+abstract class DataContainer extends Data<Container> {}

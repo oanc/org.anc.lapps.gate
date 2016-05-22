@@ -18,14 +18,15 @@
         <url>https://github.com/ksuderman/org.anc.lapps.gate</url>
     </scm>
     <properties>
+        <java.version>1.7</java.version>
         <gate.version>7.1</gate.version>
         <anc.commons.version>3.5.0</anc.commons.version>
         <lapps.api.version>2.0.1</lapps.api.version>
-        <lapps.core.version>2.0.2</lapps.core.version>
+        <lapps.core.version>2.0.0</lapps.core.version>
         <lapps.meta.version>1.1.0</lapps.meta.version>
-        <lapps.client.version>2.0.3</lapps.client.version>
-        <lapps.vocabulary.version>2.3.0</lapps.vocabulary.version>
-        <lapps.discriminator.version>2.2.1</lapps.discriminator.version>
+        <lapps.client.version>2.0.0</lapps.client.version>
+        <lapps.vocabulary.version>1.0.0</lapps.vocabulary.version>
+        <lapps.discriminator.version>2.0.1</lapps.discriminator.version>
         <lapps.serialization.version>2.3.0</lapps.serialization.version>
         <lapps.annotations.version>1.1.0</lapps.annotations.version>
     </properties>
