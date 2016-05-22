@@ -1,21 +1,15 @@
 package org.anc.lapps.gate
 
-import org.junit.Ignore
 import org.junit.Test
 import org.lappsgrid.api.WebService
 import org.lappsgrid.core.DataFactory
-import org.lappsgrid.discriminator.Constants
 import org.lappsgrid.discriminator.DiscriminatorRegistry
-import org.lappsgrid.discriminator.Helpers
 import org.lappsgrid.serialization.Data
 import org.lappsgrid.serialization.Serializer
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNotEquals
-import static org.lappsgrid.discriminator.Discriminators.Uri;
-import static org.lappsgrid.discriminator.Discriminators.Values;
-
-import static org.junit.Assert.assertTrue
+import static org.junit.Assert.*
+import static org.lappsgrid.discriminator.Discriminators.Uri
+import static org.lappsgrid.discriminator.Discriminators.Values
 
 /**
  * @author Keith Suderman
