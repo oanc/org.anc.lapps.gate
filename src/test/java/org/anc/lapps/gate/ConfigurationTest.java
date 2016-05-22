@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 /**
  * @author Keith Suderman
  */
-@Ignore
+
 public class ConfigurationTest
 {
    private Configuration k;
@@ -46,7 +46,7 @@ public class ConfigurationTest
    @Test
    public void testPoolSize()
    {
-      assertTrue("Pool size is " + k.POOL_SIZE, k.POOL_SIZE == 4);
+      assertTrue("Pool size is " + k.POOL_SIZE, k.POOL_SIZE == 1);
    }
 
    private void check(String path)

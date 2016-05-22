@@ -1,6 +1,6 @@
 package org.anc.lapps.gate;
 
-import org.anc.constants.*;
+import org.anc.constants.Constants;
 
 import java.io.IOException;
 

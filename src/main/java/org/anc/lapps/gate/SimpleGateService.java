@@ -3,43 +3,109 @@ package org.anc.lapps.gate;
 import gate.*;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
-import org.lappsgrid.api.Data;
+import org.anc.io.UTF8Reader;
 import org.lappsgrid.api.InternalException;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.DiscriminatorRegistry;
-import org.lappsgrid.discriminator.Types;
-import org.lappsgrid.vocabulary.Metadata;
+import org.lappsgrid.experimental.annotations.CommonMetadata;
+import org.lappsgrid.metadata.ServiceMetadata;
+import org.lappsgrid.serialization.Data;
+import org.lappsgrid.serialization.Serializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
+
+import static org.lappsgrid.discriminator.Discriminators.Uri;
 
 /**
  * @author Keith Suderman
  */
+@CommonMetadata(
+        vendor = "http://www.anc.org",
+        encoding = "UTF-8",
+        language = "en",
+        license = "apache2",
+        format = "gate"
+)
 public abstract class SimpleGateService implements WebService
 {
    public static final Logger logger = LoggerFactory.getLogger(SimpleGateService.class);
    public static final Configuration K = new Configuration();
 
+   /**
+    * The GATE processing resource that make up this service. For
+    * example a service that runs a GATE PR followed by a Jape
+    * transducer to tweak the output.
+    */
    protected AbstractLanguageAnalyser[] resources = null;
+
+   /**
+    * Any exceptions thrown during initialization are saved and returned
+    * to the user whenever they call the {@link #execute execute}
+    * method.
+    */
    protected Exception savedException;
+
+   /**
+    * A human readable name for this service.
+    */
    protected String name;
 
-   // Index used when inserting resources into the resources array.
+   /**
+    * The JSON metadata for the service.
+    */
+   protected String metadata;
+
+   /*
+    * Index used when inserting resources into the resources array.
+    */
    private int index = 0;
 
-   public SimpleGateService()
+   // Error messages displayed to the user.
+   /** An unexpected exception was caught. */
+   protected static final String UNEXPECTED = "This is unexpected...";
+
+   /** For compatibility with the {@link org.anc.lapps.gate.PooledGateService}. */
+   protected static final String BUSY = "The service is busy. Please try again later.";
+
+   public SimpleGateService(Class<? extends WebService> theClass)
    {
-      this(1);
+      this(theClass, 1);
    }
 
-   public SimpleGateService(int size)
+   public SimpleGateService(Class<? extends WebService> theClass, int size)
    {
+      String jsonName = "metadata/" + theClass.getName() + ".json";
+      try
+      {
+			logger.debug("Loading metadata from {}", jsonName);
+			ClassLoader loader = Thread.currentThread().getContextClassLoader();
+			if (loader == null)
+			{
+				loader = SimpleGateService.class.getClassLoader();
+			}
+			InputStream stream = loader.getResourceAsStream(jsonName);
+			if (stream == null)
+			{
+				logger.error("Unable to load metadata from {}", jsonName);
+				metadata = DataFactory.error("Unable to load metadata from " + jsonName);
+			}
+			else
+			{
+				UTF8Reader reader = new UTF8Reader(stream);
+				String json = reader.readString();
+            ServiceMetadata metadata = Serializer.parse(json, ServiceMetadata.class);
+				this.metadata = new Data<ServiceMetadata>(Uri.META, metadata).asJson();
+				reader.close();
+//				String json = ResourceLoader.loadString(jsonName);
+			}
+      }
+      catch (IOException e)
+      {
+         metadata = DataFactory.error("Unable to load JSON metadata.");
+      }
+
       resources = new AbstractLanguageAnalyser[size];
 
       synchronized (State.initialized) {
@@ -150,37 +216,42 @@ public abstract class SimpleGateService implements WebService
       return this.getClass().getCanonicalName() + ":" + Version.getVersion();
    }
 
-   @Override
-   public Data configure(Data config)
+   public String getMetadata()
    {
-      return DataFactory.error("Unsupported operation.");
+      return metadata;
    }
 
-   @Override
-   public Data execute(Data input)
+//   @Override
+//   public Data configure(Data config)
+//   {
+//      return DataFactory.error("Unsupported operation.");
+//   }
+
+   public Document doExecute(String input) throws Exception
    {
       logger.debug("Executing {}", name);
       if (savedException != null)
       {
          logger.warn("Returning saved exception: " + savedException.getMessage());
-         return new Data(Types.ERROR, getStackTrace(savedException));
+//         return new Data(Uri.ERROR, getStackTrace(savedException));
+         throw savedException;
       }
 
-      Document doc = null;
-      try
-      {
-         doc = getDocument(input);
-      }
-      catch (InternalException e)
-      {
-         logger.error("Internal exception.", e);
-         return new Data(Types.ERROR, getStackTrace(e));
-      }
+//      Document doc = null;
+//      try
+//      {
+        Document doc = getDocument(input);
+//      }
+//      catch (InternalException e)
+//      {
+//         logger.error("Internal exception.", e);
+//         return new Data(Uri.ERROR, getStackTrace(e));
+//      }
 
-      Data result = null;
+//      Data result = null;
 //      AbstractLanguageAnalyser resources = null;
-      try
-      {
+//      try
+//      {
 //         resources = pool.take();
          for (AbstractLanguageAnalyser resource : resources)
          {
@@ -196,47 +267,47 @@ public abstract class SimpleGateService implements WebService
 //            doc.getFeatures().put(Metadata.PRODUCED_BY, producedBy);
             resource.setDocument(null);
          }
-         String xml = doc.toXml();
-         Factory.deleteResource(doc);
-         result = new Data(Types.GATE, xml);
-      }
-      catch (Exception e)
-      {
-         logger.error("Error running GATE resources {}", name, e);
-         return new Data(Types.ERROR, getStackTrace(e));
-      }
-      finally
-      {
-         Factory.deleteResource(doc);
-      }
+//         String xml = doc.toXml();
+//         result = new Data(Uri.GATE, xml);
+//      }
+//      catch (Exception e)
+//      {
+//         logger.error("Error running GATE resources {}", name, e);
+//         return new Data(Uri.ERROR, getStackTrace(e));
+//      }
+//      finally
+//      {
+//         Factory.deleteResource(doc);
+//      }
       logger.info("Execution complete.");
-      return result;
+      return doc;
    }
 
-   Document getDocument(Data input) throws InternalException
+   Document getDocument(String input) throws InternalException
    {
+		Data<String> data = Serializer.parse(input, Data.class);
       Document doc = null;
       try
       {
-         long type = input.getDiscriminator();
-         if (type == Types.TEXT)
+         String uri = data.getDiscriminator();
+         if (uri.equals(Uri.TEXT))
          {
             logger.info("Creating document from text.");
-            doc = Factory.newDocument(input.getPayload());
+            doc = Factory.newDocument(data.getPayload());
          }
-         else if (type == Types.GATE)
+         else if (uri.equals(Uri.GATE) || uri.equals(Uri.XML))
          {
-            logger.info("Creating document from GATE document.");
+            logger.info("Creating document from GATE/XML document.");
             doc = (Document)
                     Factory.createResource("gate.corpora.DocumentImpl",
                             Utils.featureMap(gate.Document.DOCUMENT_STRING_CONTENT_PARAMETER_NAME,
-                                    input.getPayload(),
+                                    data.getPayload(),
                                     gate.Document.DOCUMENT_MIME_TYPE_PARAMETER_NAME, "text/xml"));
          }
          else
          {
-            String name = DiscriminatorRegistry.get(type);
-            throw new InternalException("Unknown document type : " + name);
+//            String name = DiscriminatorRegistry.get(type);
+            throw new InternalException("Unknown document type : " + uri);
          }
       }
       catch (ResourceInstantiationException ex)

@@ -3,40 +3,31 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
-import org.lappsgrid.vocabulary.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SentenceSplitter extends PooledGateService
+@ServiceMetadata(
+        description = "GATE Sentence Splitter",
+        requires = "token",
+        produces = "sentence"
+)
+public class SentenceSplitter extends SimpleGateService
 {
    protected static final Logger logger = LoggerFactory.getLogger(SentenceSplitter.class);
    public SentenceSplitter()
    {
-      super();
+      super(SentenceSplitter.class);
       createResource("gate.creole.splitter.SentenceSplitter");
       logger.info("Sentence splitter created.");
    }
    
-   public long[] requires()
+   public String execute(String input)
    {
-      logger.info("Called requires");
-      return new long[] { Types.GATE, Types.TOKEN };
-   }
-   
-   public long[] produces()
-   {
-      logger.info("Called produces.");
-      return new long[] { Types.GATE, Types.SENTENCE };
-   }
-
-   public Data execute(Data input)
-   {
-      Document document = null;
+      Document document;
       try
       {
          document = doExecute(input);
@@ -47,7 +38,7 @@ public class SentenceSplitter extends PooledGateService
       }
       if (document == null)
       {
-         return DataFactory.error(BUSY);
+         return DataFactory.error("This was unexpected...");
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = document.getFeatures();
@@ -57,7 +48,7 @@ public class SentenceSplitter extends PooledGateService
       }
       features.put("lapps:step", step + 1);
       features.put("lapps:" + Annotations.SENTENCE, step + " " + producer + " " + Contents.Chunks.SENTENCES);
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }

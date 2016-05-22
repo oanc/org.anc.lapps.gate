@@ -3,33 +3,27 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
-import org.lappsgrid.vocabulary.Metadata;
 
 /**
  * @author Keith Suderman
  */
-public class Gazetteer extends PooledGateService
+@ServiceMetadata(
+      description = "GATE Gazetteer",
+      requires = "http://vocab.lappsgrid.org/Token",
+      produces = "http://vocab.lappsgrid.org/Lookup"
+)
+public class Gazetteer extends SimpleGateService
 {
    public Gazetteer()
    {
-      super();
+      super(Gazetteer.class);
       createResource("gate.creole.gazetteer.DefaultGazetteer");
    }
 
-   public long[] requires() {
-      return new long[] { Types.GATE, Types.TOKEN };
-   }
-
-   // TODO Determine what annotation types are returned by the Gazetteer.
-   public long[] produces() {
-      return new long[] { Types.GATE, Types.LOOKUP };
-   }
-
-   public Data execute(Data input)
+   public String execute(String input)
    {
       Document document = null;
       try
@@ -52,7 +46,7 @@ public class Gazetteer extends PooledGateService
       }
       features.put("lapps:step", step + 1);
       features.put("lapps:" + Annotations.LOOKUP, step + " " + producer + " lookup:gate");
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }

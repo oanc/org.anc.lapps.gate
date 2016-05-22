@@ -3,41 +3,42 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
-import org.lappsgrid.vocabulary.Annotations;
-import org.lappsgrid.vocabulary.Metadata;
-
-import java.util.*;
+import org.lappsgrid.experimental.annotations.ServiceMetadata;
 
 /**
  * @author Keith Suderman
  */
-public class Coreferencer extends PooledGateService
+@ServiceMetadata(
+        description = "Coreferencer from GATE",
+        requires = { "person"},
+        produces = { "http://vocab.lappsgrid.org/NamedEntity#matches" }
+)
+public class Coreferencer extends SimpleGateService
 {
    public Coreferencer()
    {
-      super();
+      super(Coreferencer.class);
       createResource("gate.creole.coref.Coreferencer");
    }
 
-   public long[] produces()
-   {
-      return new long[] { Types.GATE, Types.COREF };
-   }
+//   public long[] produces()
+//   {
+//      return new long[] { Types.GATE, Types.COREF };
+//   }
+//
+//   public long[] requires()
+//   {
+//      return new long[] { Types.GATE, Types.NAMED_ENTITES };
+//   }
 
-   public long[] requires()
-   {
-      return new long[] { Types.GATE, Types.NAMED_ENTITES };
-   }
-
-   public Data execute(Data input)
+   @Override
+   public String execute(String json)
    {
       Document document = null;
       try
       {
-         document = doExecute(input);
+         document = doExecute(json);
       }
       catch (Exception e)
       {
@@ -45,7 +46,7 @@ public class Coreferencer extends PooledGateService
       }
       if (document == null)
       {
-         return DataFactory.error(BUSY);
+         return DataFactory.error(UNEXPECTED);
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = document.getFeatures();
@@ -54,13 +55,29 @@ public class Coreferencer extends PooledGateService
          step = 1;
       }
       features.put("lapps:step", step + 1);
-      features.put("lapps:" + Annotations.PRONOMINAL_CORREFERNCE, step + " " + producer + " coref:gate");
+      features.put("lapps:PRONOMINAL_CORREFERNCE", step + " " + producer + " coref:gate");
 //      features.put(Metadata.Contains.TYPE, "coref:gate");
 //      features.put(Metadata.Contains.PRODUCER, producer);
 //      features.put("annotation", Annotations.COREFERENCE);
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }
 
+//   public Data getMetadata()
+//   {
+//      if (metadata == null)
+//      {
+//         try
+//         {
+//            String json = ResourceLoader.loadString("metadata/" + Coreferencer.class.getName() + ".json");
+//            metadata = DataFactory.meta(json);
+//         }
+//         catch (IOException e)
+//         {
+//            metadata = DataFactory.error("Unable to load metadata json.", e);
+//         }
+//      }
+//      return metadata;
+//   }
 }

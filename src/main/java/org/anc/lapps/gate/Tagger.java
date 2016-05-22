@@ -3,42 +3,25 @@ package org.anc.lapps.gate;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
-import org.anc.lapps.gate.PooledGateService;
-import org.anc.lapps.gate.SimpleGateService;
-import org.lappsgrid.api.Data;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Types;
+import org.lappsgrid.experimental.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
-import org.lappsgrid.vocabulary.Metadata;
 
-import java.util.List;
-
-public class Tagger extends PooledGateService
+@ServiceMetadata(
+		  description = "GATE Part of Speech Tagger",
+        requires = {"http://vocab.lappsgrid.org/Token"},
+        produces = {"http://vocab.lappsgrid.org/Token#pos"}
+)
+public class Tagger extends SimpleGateService
 {
    public Tagger()
    {
-      super();
+      super(Tagger.class);
       createResource("gate.creole.POSTagger");
    }
 
-   public long[] requires()
-   {
-      return new long[] {
-            Types.GATE,
-            Types.TOKEN
-      };
-   }
-   
-   public long[] produces()
-   {
-      return new long[] {
-            Types.GATE,
-            Types.POS
-         };      
-   }
-
-   public Data execute(Data input)
+   public String execute(String input)
    {
       Document document = null;
       try
@@ -51,7 +34,7 @@ public class Tagger extends PooledGateService
       }
       if (document == null)
       {
-         return DataFactory.error(BUSY);
+         return DataFactory.error("This was unexpected...");
       }
       String producer = this.getClass().getName() + "_" + Version.getVersion();
       FeatureMap features = document.getFeatures();
@@ -61,7 +44,7 @@ public class Tagger extends PooledGateService
       }
       features.put("lapps:step", step + 1);
       features.put("lapps:" + Annotations.PART_OF_SPEECH, step + " " + producer + " " + Contents.TagSets.GATE);
-      Data result = DataFactory.gateDocument(document.toXml());
+      String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
    }
