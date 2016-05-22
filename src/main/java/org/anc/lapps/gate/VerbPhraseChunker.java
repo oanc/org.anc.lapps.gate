@@ -4,7 +4,7 @@ import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.experimental.annotations.ServiceMetadata;
+import org.lappsgrid.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
 
@@ -46,7 +46,7 @@ public class VerbPhraseChunker extends SimpleGateService
          step = 1;
       }
       features.put("lapps:step", step + 1);
-      features.put("lapps:" + Annotations.VCHUNK, step + producer + " " + Contents.Chunks.VERBS);
+      features.put("lapps:vchunk", step + producer + " " + Contents.Chunks.VERBS);
       String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;

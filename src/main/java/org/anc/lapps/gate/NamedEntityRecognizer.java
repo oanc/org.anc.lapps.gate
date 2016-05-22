@@ -2,7 +2,7 @@ package org.anc.lapps.gate;
 
 import gate.*;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.experimental.annotations.ServiceMetadata;
+import org.lappsgrid.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 
 import java.util.Iterator;

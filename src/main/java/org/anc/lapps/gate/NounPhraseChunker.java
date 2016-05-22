@@ -4,7 +4,7 @@ import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.experimental.annotations.ServiceMetadata;
+import org.lappsgrid.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 
 /**
@@ -68,7 +68,7 @@ public class NounPhraseChunker extends SimpleGateService
          step = 1;
       }
       features.put("lapps:step", step + 1);
-      features.put("lapps:" + Annotations.NCHUNK, step + " " + producer + " chunk:annie");
+      features.put("lapps:nchunk", step + " " + producer + " chunk:annie");
       String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
