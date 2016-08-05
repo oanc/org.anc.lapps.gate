@@ -28,18 +28,20 @@ class ProcessHostageCorpus {
         ConcurrentLinkedQueue<Packet> tokenized = new ConcurrentLinkedQueue<>()
         ConcurrentLinkedQueue<Packet> split = new ConcurrentLinkedQueue<>()
         ConcurrentLinkedQueue<Packet> tagged = new ConcurrentLinkedQueue<>()
-        ConcurrentLinkedQueue<Packet> neq = new ConcurrentLinkedQueue<>()
+//        ConcurrentLinkedQueue<Packet> neq = new ConcurrentLinkedQueue<>()
         ConcurrentLinkedQueue<Packet> converted = new ConcurrentLinkedQueue<>()
 
         Thread reader = new DataReader(files, loaded)
         Thread tokenizer = new TokenizerWorker(loaded, tokenized)
         Thread splitter = new SplitterWorker(tokenized, split)
         Thread tagger = new TaggerWorker(split, tagged)
-        Thread recognizer = new NameEnitityRecognizerWorker(tagged, neq)
-        Thread converter = new ConverterWorker(neq, converted)
+//        Thread recognizer = new NameEnitityRecognizerWorker(tagged, neq)
+        Thread converter = new ConverterWorker(tagged, converted)
         Thread writer = new DataWriter('/var/corpora/Yemen-Gate', converted)
 
-        List threads = [ reader, tokenizer, splitter, tagger, recognizer, converter, writer ]
+//        List threads = [ reader, tokenizer, splitter, tagger, recognizer, converter, writer ]
+        List threads = [ reader, tokenizer, splitter, tagger, converter, writer]
+        
         threads*.start()
         threads*.join()
     }
@@ -200,6 +202,8 @@ class DataWriter extends Thread {
 }
 
 class Packet {
+    // POISON is the last packet sent though the pipeline.  All threads exit when they
+    // see the poison pill.
     static final Packet POISON = new Packet()
     String filename
     Data data
