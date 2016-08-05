@@ -4,7 +4,7 @@ import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.experimental.annotations.ServiceMetadata;
+import org.lappsgrid.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 
 /**
@@ -45,7 +45,7 @@ public class Gazetteer extends SimpleGateService
          step = 1;
       }
       features.put("lapps:step", step + 1);
-      features.put("lapps:" + Annotations.LOOKUP, step + " " + producer + " lookup:gate");
+      features.put("lapps:lookup", step + " " + producer + " lookup:gate");
       String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;

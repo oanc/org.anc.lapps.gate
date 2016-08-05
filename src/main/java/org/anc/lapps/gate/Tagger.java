@@ -4,7 +4,7 @@ import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.experimental.annotations.ServiceMetadata;
+import org.lappsgrid.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
 
@@ -43,7 +43,7 @@ public class Tagger extends SimpleGateService
          step = 1;
       }
       features.put("lapps:step", step + 1);
-      features.put("lapps:" + Annotations.PART_OF_SPEECH, step + " " + producer + " " + Contents.TagSets.GATE);
+      features.put("lapps:pos", step + " " + producer + " " + Contents.TagSets.GATE);
       String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;
