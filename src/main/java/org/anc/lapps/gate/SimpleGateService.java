@@ -7,12 +7,8 @@ import org.anc.io.UTF8Reader;
 import org.lappsgrid.api.InternalException;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
-<<<<<<< HEAD
-import org.lappsgrid.experimental.annotations.CommonMetadata;
-=======
 import org.lappsgrid.discriminator.Discriminators;
 import org.lappsgrid.annotations.CommonMetadata;
->>>>>>> lrec
 import org.lappsgrid.metadata.ServiceMetadata;
 import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.Serializer;
@@ -101,11 +97,7 @@ public abstract class SimpleGateService implements WebService
 			{
 				UTF8Reader reader = new UTF8Reader(stream);
 				String json = reader.readString();
-<<<<<<< HEAD
-            ServiceMetadata metadata = Serializer.parse(json, ServiceMetadata.class);
-=======
                 ServiceMetadata metadata = Serializer.parse(json, ServiceMetadata.class);
->>>>>>> lrec
 				this.metadata = new Data<ServiceMetadata>(Uri.META, metadata).asJson();
 				reader.close();
 //				String json = ResourceLoader.loadString(jsonName);
@@ -305,14 +297,11 @@ public abstract class SimpleGateService implements WebService
             logger.info("Creating document from text.");
             doc = Factory.newDocument(data.getPayload());
          }
-<<<<<<< HEAD
-=======
          else if (uri.equals(Uri.LAPPS)) {
 			DataContainer dc = Serializer.parse(input, DataContainer.class);
 			Container container = dc.getPayload();
 			 doc = Factory.newDocument(container.getText());
          }
->>>>>>> lrec
          else if (uri.equals(Uri.GATE) || uri.equals(Uri.XML))
          {
             logger.info("Creating document from GATE/XML document.");
