@@ -18,17 +18,17 @@
         <url>https://github.com/ksuderman/org.anc.lapps.gate</url>
     </scm>
     <properties>
-        <java.version>1.7</java.version>
-        <gate.version>7.1</gate.version>
-        <anc.commons.version>3.5.0</anc.commons.version>
+        <java.version>1.8</java.version>
+        <gate.version>8.3</gate.version>
+        <anc.commons.version>3.6.0</anc.commons.version>
         <lapps.api.version>2.0.1</lapps.api.version>
-        <lapps.core.version>2.0.2</lapps.core.version>
-        <lapps.meta.version>1.1.0</lapps.meta.version>
-        <lapps.client.version>2.0.3</lapps.client.version>
-        <lapps.vocabulary.version>2.3.0</lapps.vocabulary.version>
-        <lapps.discriminator.version>2.2.1</lapps.discriminator.version>
-        <lapps.serialization.version>2.3.0</lapps.serialization.version>
-        <lapps.annotations.version>1.1.0</lapps.annotations.version>
+        <lapps.core.version>2.0.3-SNAPSHOT</lapps.core.version>
+        <lapps.meta.version>1.1.1-SNAPSHOT</lapps.meta.version>
+        <lapps.client.version>2.0.4-SNAPSHOT</lapps.client.version>
+        <lapps.vocabulary.version>2.3.1-SNAPSHOT</lapps.vocabulary.version>
+        <lapps.discriminator.version>2.3.1-SNAPSHOT</lapps.discriminator.version>
+        <lapps.serialization.version>2.4.0-SNAPSHOT</lapps.serialization.version>
+        <lapps.annotations.version>1.1.1-SNAPSHOT</lapps.annotations.version>
     </properties>
     <build>
         <finalName>GateServices#${project.version}</finalName>
@@ -81,8 +81,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.4.5</version>
-            <scope>test</scope>
+            <version>2.4.3</version>
         </dependency>
         <!--
         <dependency>
@@ -106,53 +105,101 @@
             <artifactId>annotations</artifactId>
             <version>${lapps.annotations.version}</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>discriminator</artifactId>
             <version>${lapps.discriminator.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>api</artifactId>
             <version>${lapps.api.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>core</artifactId>
             <version>${lapps.core.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>vocabulary</artifactId>
             <version>${lapps.vocabulary.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>metadata</artifactId>
             <version>${lapps.meta.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>serialization</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        -->
         <dependency>
             <groupId>uk.ac.gate</groupId>
             <artifactId>gate-core</artifactId>
             <version>${gate.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.anc</groupId>
             <artifactId>common</artifactId>
             <version>${anc.commons.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>client</artifactId>
             <version>${lapps.client.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>org.anc.json</groupId>
-            <artifactId>validator</artifactId>
-            <version>1.0.1</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -161,19 +208,19 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        -->
-        <!--
         <dependency>
-            <groupId>org.anc.lapps</groupId>
-            <artifactId>serialization</artifactId>
-            <version>${lapps.serialization.version}</version>
+            <groupId>org.anc.json</groupId>
+            <artifactId>validator</artifactId>
+            <version>1.1.1</version>
             <scope>test</scope>
+            <!--
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
+            -->
         </dependency>
-        <dependency>
-            <groupId>net.bull.javamelody</groupId>
-            <artifactId>javamelody-core</artifactId>
-            <version>1.45.0</version>
-        </dependency>
-        -->
     </dependencies>
 </project>

@@ -11,6 +11,7 @@ import org.lappsgrid.discriminator.Discriminators;
 import org.lappsgrid.annotations.CommonMetadata;
 import org.lappsgrid.metadata.ServiceMetadata;
 import org.lappsgrid.serialization.Data;
+import org.lappsgrid.serialization.DataContainer;
 import org.lappsgrid.serialization.Serializer;
 import org.lappsgrid.serialization.lif.Container;
 import org.slf4j.Logger;
@@ -124,7 +125,7 @@ public abstract class SimpleGateService implements WebService
                   savedException = new FileNotFoundException(K.GATE_HOME);
                   return;
                }
-               logger.info("Gate home: {}", K.GATE_HOME);
+               logger.debug("Gate home: {}", K.GATE_HOME);
                File plugins = new File(K.PLUGINS_HOME);
                if (!plugins.exists())
                {
@@ -132,7 +133,7 @@ public abstract class SimpleGateService implements WebService
                   savedException = new FileNotFoundException(K.PLUGINS_HOME);
                   return;
                }
-               logger.info("Plugins home: {}", K.PLUGINS_HOME);
+               logger.debug("Plugins home: {}", K.PLUGINS_HOME);
                File siteConfig = new File(K.SITE_CONFIG);
                if (!siteConfig.exists())
                {
@@ -140,7 +141,7 @@ public abstract class SimpleGateService implements WebService
                   savedException = new FileNotFoundException(K.SITE_CONFIG);
                   return;
                }
-               logger.info("Site config: {}", K.SITE_CONFIG);
+               logger.debug("Site config: {}", K.SITE_CONFIG);
                File userConfig = new File(K.USER_CONFIG);
                if (!userConfig.exists())
                {
@@ -148,7 +149,7 @@ public abstract class SimpleGateService implements WebService
                   savedException = new FileNotFoundException(K.USER_CONFIG);
                   return;
                }
-               logger.info("User config: {}", K.USER_CONFIG);
+               logger.debug("User config: {}", K.USER_CONFIG);
                Gate.setGateHome(gateHome);
                Gate.setSiteConfigFile(siteConfig);
                Gate.setPluginsHome(plugins);
@@ -156,7 +157,7 @@ public abstract class SimpleGateService implements WebService
 
                try
                {
-                  logger.info("Initializing GATE");
+                  logger.debug("Initializing GATE");
                   Gate.init();
                }
                catch (Exception e)
@@ -332,5 +333,3 @@ public abstract class SimpleGateService implements WebService
       return stringWriter.toString();
    }
 }
-
-abstract class DataContainer extends Data<Container> {}

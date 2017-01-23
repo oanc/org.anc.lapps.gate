@@ -1,13 +1,13 @@
 package org.anc.lapps.gate;
 
-import org.anc.constants.Constants;
+//import org.anc.constants.NewConstants;
 
 import java.io.IOException;
 
 /**
  * @author Keith Suderman
  */
-public class Configuration extends Constants
+public class Configuration extends org.anc.constants.Constants
 {
 //   @Default("/Applications/Gate-7.0")
 //   public final String GATE_HOME = null;
@@ -42,7 +42,7 @@ public class Configuration extends Constants
    {
       try
       {
-         new Configuration().save();
+         new Configuration().save("src/test/resources/picard/org.anc.lapps.gate.Configuration.properties");
       }
       catch (IOException e)
       {
