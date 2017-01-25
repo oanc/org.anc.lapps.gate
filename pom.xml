@@ -51,6 +51,7 @@
                     </filesets>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>org.anc.maven.plugins</groupId>
                 <artifactId>anc-maven-plugin</artifactId>
@@ -68,6 +69,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             <!--
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
