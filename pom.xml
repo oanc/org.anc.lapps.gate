@@ -4,30 +4,24 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.anc.lapps</groupId>
     <artifactId>gate</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <name>Services: GATE</name>
     <description>GATE processing resources wrapped as LAPPS services.</description>
     <packaging>war</packaging>
     <parent>
         <groupId>org.lappsgrid.maven</groupId>
         <artifactId>war-parent-pom</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.5</version>
     </parent>
     <scm>
         <connection>https://github.com/ksuderman/org.anc.lapps.gate.git</connection>
         <url>https://github.com/ksuderman/org.anc.lapps.gate</url>
     </scm>
     <properties>
-        <java.version>1.7</java.version>
-        <gate.version>7.1</gate.version>
-        <anc.commons.version>3.5.0</anc.commons.version>
-        <lapps.api.version>2.0.0</lapps.api.version>
-        <lapps.core.version>2.0.0</lapps.core.version>
-        <lapps.meta.version>1.0.0</lapps.meta.version>
-        <lapps.client.version>2.0.0</lapps.client.version>
-        <lapps.vocabulary.version>1.0.0</lapps.vocabulary.version>
-        <lapps.discriminator.version>2.0.1</lapps.discriminator.version>
-        <lapps.serialization.version>2.0.0</lapps.serialization.version>
+        <java.version>1.8</java.version>
+        <gate.version>8.3</gate.version>
+        <anc.commons.version>3.6.0</anc.commons.version>
+        <lapps.version>2.3.3</lapps.version>
     </properties>
     <build>
         <finalName>GateServices#${project.version}</finalName>
@@ -36,7 +30,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <annotationProcessors>
-                        <annotationProcessor>org.lappsgrid.experimental.annotation.processing.MetadataProcessor</annotationProcessor>
+                        <annotationProcessor>org.lappsgrid.annotation.processing.MetadataProcessor</annotationProcessor>
                     </annotationProcessors>
                 </configuration>
             </plugin>
@@ -53,7 +47,7 @@
             <plugin>
                 <groupId>org.anc.maven.plugins</groupId>
                 <artifactId>anc-maven-plugin</artifactId>
-                <version>1.0.6</version>
+                <version>1.0.7</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -80,8 +74,15 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.2.0</version>
+            <version>2.4.3</version>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>org.anc.lapps.converters</groupId>
+            <artifactId>gate</artifactId>
+            <version>2.0.1-SNAPSHOT</version>
+        </dependency>
+        -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -92,73 +93,138 @@
             -->
             <scope>compile</scope>
         </dependency>
+        <!--
         <dependency>
-            <groupId>org.lappsgrid.experimental</groupId>
+            <groupId>org.lappsgrid</groupId>
             <artifactId>annotations</artifactId>
-            <version>1.0.0</version>
+            <version>${lapps.annotations.version}</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>discriminator</artifactId>
             <version>${lapps.discriminator.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>api</artifactId>
             <version>${lapps.api.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>core</artifactId>
             <version>${lapps.core.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!--
-        -->
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>vocabulary</artifactId>
             <version>${lapps.vocabulary.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.lappsgrid.experimental</groupId>
+            <groupId>org.lappsgrid</groupId>
             <artifactId>metadata</artifactId>
             <version>${lapps.meta.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        -->
+        <!--
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>serialization</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        -->
         <dependency>
             <groupId>uk.ac.gate</groupId>
             <artifactId>gate-core</artifactId>
             <version>${gate.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.gate</groupId>
+            <artifactId>gate-asm</artifactId>
+            <version>5.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.ac.gate</groupId>
+            <artifactId>gate-compiler-jdt</artifactId>
+            <version>4.3.2-P20140317-1600</version>
         </dependency>
         <dependency>
             <groupId>org.anc</groupId>
             <artifactId>common</artifactId>
             <version>${anc.commons.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!--
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>client</artifactId>
             <version>${lapps.client.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        -->
         <dependency>
             <groupId>org.anc.json</groupId>
             <artifactId>validator</artifactId>
-            <version>1.0.1</version>
-            <scope>test</scope>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>org.anc.lapps</groupId>
-            <artifactId>serialization</artifactId>
-            <version>${lapps.serialization.version}</version>
+            <version>1.1.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>net.bull.javamelody</groupId>
-            <artifactId>javamelody-core</artifactId>
-            <version>1.45.0</version>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>all</artifactId>
+            <version>${lapps.version}</version>
         </dependency>
-        -->
     </dependencies>
 </project>

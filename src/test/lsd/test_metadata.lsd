@@ -1,0 +1,43 @@
+#!/usr/bin/env lsd
+
+// The Docker image to run.
+String image = 'lappsgrid/gate'
+
+// The command to start the docker image.
+String cmd = "docker run -d -p 8080:8080 --name gate $image"
+
+// If a container is not running then start one.
+//if (!running(image)) {
+//    String id = cmd.execute().text
+//    println "Started $id"
+//}
+
+url = "http://localhost:8080/GateServices/2.1.0/services"
+
+client = new ServiceClient("$url/POSTagger")
+println groovy.json.JsonOutput.prettyPrint(client.getMetadata())
+
+/*
+ping('Tokenizer')
+
+if (running(image)) {
+    println "Halting $image"
+    println "docker rm -f gate".execute().text
+}
+println "Done."
+return
+
+void ping(String name) {
+    println "Pinging $name"
+    ServiceClient client = newService(name)
+    println groovy.json.JsonOutput.prettyPrint(client.getMetadata())
+}
+
+WebService newService(String name) {
+    return new ServiceClient("$url/$name", null, null)
+}
+
+boolean running(String service) {
+    return "docker ps".execute().text.contains(service)
+}
+*/

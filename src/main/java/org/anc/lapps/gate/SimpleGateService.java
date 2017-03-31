@@ -7,10 +7,13 @@ import org.anc.io.UTF8Reader;
 import org.lappsgrid.api.InternalException;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.experimental.annotations.CommonMetadata;
+import org.lappsgrid.discriminator.Discriminators;
+import org.lappsgrid.annotations.CommonMetadata;
 import org.lappsgrid.metadata.ServiceMetadata;
 import org.lappsgrid.serialization.Data;
+import org.lappsgrid.serialization.DataContainer;
 import org.lappsgrid.serialization.Serializer;
+import org.lappsgrid.serialization.lif.Container;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,7 +98,7 @@ public abstract class SimpleGateService implements WebService
 			{
 				UTF8Reader reader = new UTF8Reader(stream);
 				String json = reader.readString();
-            ServiceMetadata metadata = Serializer.parse(json, ServiceMetadata.class);
+                ServiceMetadata metadata = Serializer.parse(json, ServiceMetadata.class);
 				this.metadata = new Data<ServiceMetadata>(Uri.META, metadata).asJson();
 				reader.close();
 //				String json = ResourceLoader.loadString(jsonName);
@@ -122,7 +125,7 @@ public abstract class SimpleGateService implements WebService
                   savedException = new FileNotFoundException(K.GATE_HOME);
                   return;
                }
-               logger.info("Gate home: {}", K.GATE_HOME);
+               logger.debug("Gate home: {}", K.GATE_HOME);
                File plugins = new File(K.PLUGINS_HOME);
                if (!plugins.exists())
                {
@@ -130,7 +133,7 @@ public abstract class SimpleGateService implements WebService
                   savedException = new FileNotFoundException(K.PLUGINS_HOME);
                   return;
                }
-               logger.info("Plugins home: {}", K.PLUGINS_HOME);
+               logger.debug("Plugins home: {}", K.PLUGINS_HOME);
                File siteConfig = new File(K.SITE_CONFIG);
                if (!siteConfig.exists())
                {
@@ -138,7 +141,7 @@ public abstract class SimpleGateService implements WebService
                   savedException = new FileNotFoundException(K.SITE_CONFIG);
                   return;
                }
-               logger.info("Site config: {}", K.SITE_CONFIG);
+               logger.debug("Site config: {}", K.SITE_CONFIG);
                File userConfig = new File(K.USER_CONFIG);
                if (!userConfig.exists())
                {
@@ -146,7 +149,7 @@ public abstract class SimpleGateService implements WebService
                   savedException = new FileNotFoundException(K.USER_CONFIG);
                   return;
                }
-               logger.info("User config: {}", K.USER_CONFIG);
+               logger.debug("User config: {}", K.USER_CONFIG);
                Gate.setGateHome(gateHome);
                Gate.setSiteConfigFile(siteConfig);
                Gate.setPluginsHome(plugins);
@@ -154,7 +157,7 @@ public abstract class SimpleGateService implements WebService
 
                try
                {
-                  logger.info("Initializing GATE");
+                  logger.debug("Initializing GATE");
                   Gate.init();
                }
                catch (Exception e)
@@ -294,6 +297,11 @@ public abstract class SimpleGateService implements WebService
          {
             logger.info("Creating document from text.");
             doc = Factory.newDocument(data.getPayload());
+         }
+         else if (uri.equals(Uri.LAPPS)) {
+			DataContainer dc = Serializer.parse(input, DataContainer.class);
+			Container container = dc.getPayload();
+			 doc = Factory.newDocument(container.getText());
          }
          else if (uri.equals(Uri.GATE) || uri.equals(Uri.XML))
          {
