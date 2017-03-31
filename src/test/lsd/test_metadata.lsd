@@ -12,7 +12,7 @@ String cmd = "docker run -d -p 8080:8080 --name gate $image"
 //    println "Started $id"
 //}
 
-url = "http://localhost:8080/GateServices/2.1.0-SNAPSHOT/services"
+url = "http://localhost:8080/GateServices/2.1.0/services"
 
 client = new ServiceClient("$url/POSTagger")
 println groovy.json.JsonOutput.prettyPrint(client.getMetadata())

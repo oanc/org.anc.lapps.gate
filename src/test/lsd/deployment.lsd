@@ -1,0 +1,23 @@
+#!/usr/bin/env lsd
+
+public class Test {
+    public static void main(String[] args) {
+        System.out.println("Hello World");
+    }
+}
+
+Test.main([] as String[])
+
+/*
+
+String ROOT = "http://grid.anc.org:9080/GateServices/2.1.0/services"
+
+String serviceList = 'Tokenizer SentenceSplitter VerbPhraseChunker Coreference NounPhraseChunker Gazetteer POSTagger NamedEntityRecognizer OrthoMatcher'
+serviceList.tokenize(' ').each {
+    ServiceClient client = new ServiceClient("$ROOT/$it")
+    println it.toUpperCase()
+    println groovy.json.JsonOutput.prettyPrint(client.getMetadata())
+    println()
+}
+
+**/
