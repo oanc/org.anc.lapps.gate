@@ -39,14 +39,14 @@ public class VerbPhraseChunker extends SimpleGateService
       {
          return DataFactory.error(BUSY);
       }
-      String producer = this.getClass().getName() + "_" + Version.getVersion();
-      FeatureMap features = document.getFeatures();
-      Integer step = (Integer) features.get("lapps:step");
-      if (step == null) {
-         step = 1;
-      }
-      features.put("lapps:step", step + 1);
-      features.put("lapps:vchunk", step + producer + " " + Contents.Chunks.VERBS);
+//      String producer = this.getClass().getName() + "_" + Version.getVersion();
+//      FeatureMap features = document.getFeatures();
+//      Integer step = (Integer) features.get("lapps:step");
+//      if (step == null) {
+//         step = 1;
+//      }
+//      features.put("lapps:step", step + 1);
+//      features.put("lapps:vchunk", step + producer + " " + Contents.Chunks.VERBS);
       String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;

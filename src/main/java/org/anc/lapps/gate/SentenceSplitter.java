@@ -5,6 +5,7 @@ import gate.Factory;
 import gate.FeatureMap;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.annotations.ServiceMetadata;
+import org.lappsgrid.discriminator.Discriminators;
 import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class SentenceSplitter extends SimpleGateService
       Document document;
       try
       {
-         document = doExecute(input);
+         document = doExecute(input, Discriminators.Uri.SENTENCE);
       }
       catch (Exception e)
       {
@@ -40,14 +41,14 @@ public class SentenceSplitter extends SimpleGateService
       {
          return DataFactory.error("This was unexpected...");
       }
-      String producer = this.getClass().getName() + "_" + Version.getVersion();
-      FeatureMap features = document.getFeatures();
-      Integer step = (Integer) features.get("lapps:step");
-      if (step == null) {
-         step = 1;
-      }
-      features.put("lapps:step", step + 1);
-      features.put("lapps:" + Annotations.SENTENCE, step + " " + producer + " " + Contents.Chunks.SENTENCES);
+//      String producer = this.getClass().getName() + "_" + Version.getVersion();
+//      FeatureMap features = document.getFeatures();
+//      Integer step = (Integer) features.get("lapps:step");
+//      if (step == null) {
+//         step = 1;
+//      }
+//      features.put("lapps:step", step + 1);
+//      features.put("lapps:" + Annotations.SENTENCE, step + " " + producer + " " + Contents.Chunks.SENTENCES);
       String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;

@@ -7,6 +7,7 @@ import gate.Factory;
 import gate.FeatureMap;
 import org.lappsgrid.annotations.ServiceMetadata;
 import org.lappsgrid.core.DataFactory;
+import org.lappsgrid.discriminator.Discriminators;
 import org.lappsgrid.vocabulary.Annotations;
 
 import java.util.Iterator;
@@ -30,16 +31,6 @@ public class NamedEntityRecognizer extends SimpleGateService
 		super(NamedEntityRecognizer.class);
 		createResource("gate.creole.ANNIETransducer");
 	}
-
-//   public long[] produces()
-//   {
-//      return new long[] { Types.GATE, Types.PERSON, Types.LOCATION, Types.ORGANIZATION };
-//   }
-//
-//   public long[] requires()
-//   {
-//      return new long[] { Types.GATE, Types.TOKEN, Types.POS, Types.LOOKUP };
-//   }
 
 	public String execute(String input)
 	{
@@ -97,15 +88,15 @@ public class NamedEntityRecognizer extends SimpleGateService
 		// back to what they were originally.
 		if (hasLocation)
 		{
-			features.put("lapps:" + Annotations.LOCATION, step + " " + producer + " ner:annie");
+			features.put("lapps:" + Discriminators.Uri.LOCATION, step + " " + producer + " gate");
 		}
 		if (hasPerson)
 		{
-			features.put("lapps:" + Annotations.PERSON, step + " " + producer + " ner:annie");
+			features.put("lapps:" + Discriminators.Uri.PERSON, step + " " + producer + " gate");
 		}
 		if (hasOrganization)
 		{
-			features.put("lapps:" + Annotations.ORGANIZATION, step + " " + producer + " ner:annie");
+			features.put("lapps:" + Discriminators.Uri.ORGANIZATION, step + " " + producer + " gate");
 		}
 		String result = DataFactory.gateDocument(document.toXml());
 		Factory.deleteResource(document);

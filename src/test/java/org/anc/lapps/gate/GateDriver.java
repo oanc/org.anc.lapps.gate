@@ -1,5 +1,11 @@
 package org.anc.lapps.gate;
 
+import gate.Document;
+import gate.Factory;
+import gate.Gate;
+import gate.ProcessingResource;
+import gate.creole.AbstractLanguageAnalyser;
+import gate.util.GateException;
 import org.anc.io.UTF8Writer;
 import org.junit.Test;
 import org.lappsgrid.api.*;
@@ -93,7 +99,20 @@ public class GateDriver
 //      tagger.execute(data);
 //      System.out.println(data.getPayload());
    }
-   
+
+   public void testGateTokenizer() throws GateException
+   {
+      Gate.setGateHome(new File("/usr/local/lapps/gate"));
+      Gate.init();
+      Document document = Factory.newDocument("Karen flew to New York.");
+      AbstractLanguageAnalyser lr = (AbstractLanguageAnalyser) Factory.createResource("gate.creole.tokeniser.DefaultTokeniser");
+      lr.setParameterValue("annotationSetName", "Tokens");
+      lr.setDocument(document);
+      lr.setCorpus(null);
+      lr.execute();
+      lr.setDocument(null);
+      System.out.println(document.toXml());
+   }
 //   public static void main(String[] args)
 //   {
 //      try

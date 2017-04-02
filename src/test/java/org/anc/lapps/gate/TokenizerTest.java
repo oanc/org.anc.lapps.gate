@@ -16,6 +16,7 @@
 
 package org.anc.lapps.gate;
 
+import gate.creole.tokeniser.DefaultTokeniser;
 import org.junit.*;
 import static org.junit.Assert.*;
 

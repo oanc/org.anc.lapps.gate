@@ -16,10 +16,10 @@
 		<file>/var/log/gate-services.log</file>
 	</appender>
     -->
-    <logger name="org.anc.lapps" level="warn"/>
-	<logger name="org.anc" level="warn"/>
+    <logger name="org.anc.lapps" level="debug"/>
+	<logger name="org.anc" level="debug"/>
 
-	<root level="warn">
+	<root level="info">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

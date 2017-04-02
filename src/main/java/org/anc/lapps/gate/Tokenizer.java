@@ -8,6 +8,8 @@ import org.lappsgrid.annotations.ServiceMetadata;
 import org.lappsgrid.vocabulary.Annotations;
 import org.lappsgrid.vocabulary.Contents;
 
+import static org.lappsgrid.discriminator.Discriminators.*;
+
 @ServiceMetadata(
         description = "ANNIE Tokeniser from GATE.",
         requires_format = {
@@ -27,10 +29,11 @@ public class Tokenizer extends SimpleGateService
 
    public String execute(String input)
    {
+      String producer = this.getClass().getName() + "_" + Version.getVersion();
       Document document = null;
       try
       {
-         document = doExecute(input);
+         document = doExecute(input, Uri.TOKEN);
       }
       catch (Exception e)
       {
@@ -40,15 +43,7 @@ public class Tokenizer extends SimpleGateService
       {
          return DataFactory.error(BUSY);
       }
-      String producer = this.getClass().getName() + "_" + Version.getVersion();
 
-      FeatureMap features = document.getFeatures();
-      Integer step = (Integer) features.get("lapps:step");
-      if (step == null) {
-         step = 1;
-      }
-      features.put("lapps:step", step + 1);
-      features.put("lapps:" + Annotations.TOKEN, step + " " + producer + " " + Contents.Tokenizations.ANNIE);
 
       String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);

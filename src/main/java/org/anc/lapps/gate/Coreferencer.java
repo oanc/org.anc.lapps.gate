@@ -5,6 +5,7 @@ import gate.Factory;
 import gate.FeatureMap;
 import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.annotations.ServiceMetadata;
+import org.lappsgrid.discriminator.Discriminators;
 
 /**
  * @author Keith Suderman
@@ -22,23 +23,13 @@ public class Coreferencer extends SimpleGateService
       createResource("gate.creole.coref.Coreferencer");
    }
 
-//   public long[] produces()
-//   {
-//      return new long[] { Types.GATE, Types.COREF };
-//   }
-//
-//   public long[] requires()
-//   {
-//      return new long[] { Types.GATE, Types.NAMED_ENTITES };
-//   }
-
    @Override
    public String execute(String json)
    {
       Document document = null;
       try
       {
-         document = doExecute(json);
+         document = doExecute(json, Discriminators.Uri.COREF);
       }
       catch (Exception e)
       {
@@ -48,17 +39,14 @@ public class Coreferencer extends SimpleGateService
       {
          return DataFactory.error(UNEXPECTED);
       }
-      String producer = this.getClass().getName() + "_" + Version.getVersion();
-      FeatureMap features = document.getFeatures();
-      Integer step = (Integer) features.get("lapps:step");
-      if (step == null) {
-         step = 1;
-      }
-      features.put("lapps:step", step + 1);
-      features.put("lapps:PRONOMINAL_CORREFERNCE", step + " " + producer + " coref:gate");
-//      features.put(Metadata.Contains.TYPE, "coref:gate");
-//      features.put(Metadata.Contains.PRODUCER, producer);
-//      features.put("annotation", Annotations.COREFERENCE);
+//      String producer = this.getClass().getName() + "_" + Version.getVersion();
+//      FeatureMap features = document.getFeatures();
+//      Integer step = (Integer) features.get("lapps:step");
+//      if (step == null) {
+//         step = 1;
+//      }
+//      features.put("lapps:step", step + 1);
+//      features.put("lapps:PRONOMINAL_CORREFERNCE", step + " " + producer + " coref:gate");
       String result = DataFactory.gateDocument(document.toXml());
       Factory.deleteResource(document);
       return result;

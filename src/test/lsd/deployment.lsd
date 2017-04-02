@@ -1,23 +1,24 @@
 #!/usr/bin/env lsd
 
-public class Test {
-    public static void main(String[] args) {
-        System.out.println("Hello World");
-    }
-}
+String version = new File("VERSION").text
 
-Test.main([] as String[])
+String ROOT = "http://grid.anc.org:9080/GateServices/$version/services"
 
-/*
-
-String ROOT = "http://grid.anc.org:9080/GateServices/2.1.0/services"
-
-String serviceList = 'Tokenizer SentenceSplitter VerbPhraseChunker Coreference NounPhraseChunker Gazetteer POSTagger NamedEntityRecognizer OrthoMatcher'
+Data data = new Data(Uri.TEXT, "Karen flew to New York.")
+String serviceList = 'Tokenizer SentenceSplitter POSTagger NamedEntityRecognizer VerbPhraseChunker NounPhraseChunker Gazetteer OrthoMatcher'
 serviceList.tokenize(' ').each {
+    println "Running $it"
     ServiceClient client = new ServiceClient("$ROOT/$it")
-    println it.toUpperCase()
-    println groovy.json.JsonOutput.prettyPrint(client.getMetadata())
-    println()
+    String json = client.execute(data.asJson())
+    data = Serializer.parse(json, Data)
+    //println groovy.json.JsonOutput.prettyPrint(client.getMetadata())
+    if (Uri.ERROR == data.discriminator) {
+        //throw new Exception("Unable to run $it")
+        println "Unable to run $it"
+        println data.payload
+        System.exit(1)
+    }
+
 }
 
-**/
+println "All services passed."

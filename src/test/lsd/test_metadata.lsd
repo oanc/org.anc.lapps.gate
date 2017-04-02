@@ -1,43 +1,34 @@
 #!/usr/bin/env lsd
 
-// The Docker image to run.
-String image = 'lappsgrid/gate'
+String version = new File("VERSION").text
 
-// The command to start the docker image.
-String cmd = "docker run -d -p 8080:8080 --name gate $image"
+String ROOT = "http://grid.anc.org:9080/GateServices/$version/services"
 
-// If a container is not running then start one.
-//if (!running(image)) {
-//    String id = cmd.execute().text
-//    println "Started $id"
-//}
+//List ok = []
+List errors = []
 
-url = "http://localhost:8080/GateServices/2.1.0/services"
+String serviceList = 'Tokenizer SentenceSplitter VerbPhraseChunker Coreference NounPhraseChunker Gazetteer POSTagger NamedEntityRecognizer OrthoMatcher'
+serviceList.tokenize(' ').each {
+    ServiceClient client = new ServiceClient("$ROOT/$it")
+    println it.toUpperCase()
+    Data data = Serializer.parse(client.getMetadata(), Data)
+    //println groovy.json.JsonOutput.prettyPrint(client.getMetadata())
+    if (Uri.ERROR == data.discriminator) {
+        errors << [name:it, error:data.payload]
+    }
+//    else {
+//        ok << it
+//    }
 
-client = new ServiceClient("$url/POSTagger")
-println groovy.json.JsonOutput.prettyPrint(client.getMetadata())
-
-/*
-ping('Tokenizer')
-
-if (running(image)) {
-    println "Halting $image"
-    println "docker rm -f gate".execute().text
+    //println()
 }
-println "Done."
-return
-
-void ping(String name) {
-    println "Pinging $name"
-    ServiceClient client = newService(name)
-    println groovy.json.JsonOutput.prettyPrint(client.getMetadata())
+if (errors.size() > 0) {
+    println "${errors.size()} components had errors"
+    errors.each { m ->
+        println "${m.name}: ${m.error}"
+    }
 }
-
-WebService newService(String name) {
-    return new ServiceClient("$url/$name", null, null)
+else {
+    println "All services passed."
 }
 
-boolean running(String service) {
-    return "docker ps".execute().text.contains(service)
-}
-*/

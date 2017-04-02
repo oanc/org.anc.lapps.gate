@@ -1,0 +1,30 @@
+#!/usr/bin/env lsd
+
+String version = new File("VERSION").text
+
+//"docker run -d -p 8080:8080 --name gate lappsgrid/gate".execute()
+
+String ROOT = "http://localhost:8080/GateServices/$version/services"
+
+Data data = new Data(Uri.TEXT, "Karen flew to New York.")
+//String serviceList = 'Tokenizer SentenceSplitter POSTagger NamedEntityRecognizer VerbPhraseChunker NounPhraseChunker Gazetteer OrthoMatcher'
+String serviceList = 'Tokenizer SentenceSplitter POSTagger VerbPhraseChunker NounPhraseChunker'
+serviceList.tokenize(' ').each {
+    println "Running $it"
+    ServiceClient client = new ServiceClient("$ROOT/$it")
+    String json = client.execute(data.asJson())
+    data = Serializer.parse(json, Data)
+    //println groovy.json.JsonOutput.prettyPrint(client.getMetadata())
+    if (Uri.ERROR == data.discriminator) {
+        //throw new Exception("Unable to run $it")
+        println "Unable to run $it"
+        println data.payload
+        System.exit(1)
+    }
+
+}
+
+ServiceClient converter = new ServiceClient("http://localhost:8080/GateConverter/2.0.0/services/GateToJson")
+String json = converter.execute(data.asJson());
+println groovy.json.JsonOutput.prettyPrint(json)
+//println "All services passed."

@@ -14,6 +14,8 @@ import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.DataContainer;
 import org.lappsgrid.serialization.Serializer;
 import org.lappsgrid.serialization.lif.Container;
+import org.lappsgrid.vocabulary.Annotations;
+import org.lappsgrid.vocabulary.Contents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -224,64 +226,41 @@ public abstract class SimpleGateService implements WebService
       return metadata;
    }
 
-//   @Override
-//   public Data configure(Data config)
-//   {
-//      return DataFactory.error("Unsupported operation.");
-//   }
+   public String getProducer() {
+   		return this.getClass().getName() + "_" + Version.getVersion();
+   }
 
    public Document doExecute(String input) throws Exception
    {
-      logger.debug("Executing {}", name);
-      if (savedException != null)
-      {
-         logger.warn("Returning saved exception: " + savedException.getMessage());
-//         return new Data(Uri.ERROR, getStackTrace(savedException));
-         throw savedException;
+	   logger.debug("Executing {}", name);
+	   if (savedException != null)
+	   {
+		   logger.warn("Returning saved exception: " + savedException.getMessage());
+		   throw savedException;
+	   }
+
+	   Document doc = getDocument(input);
+	   for (AbstractLanguageAnalyser resource : resources)
+	   {
+		   logger.info("Executing resource {}", name);
+		   resource.setDocument(doc);
+		   resource.execute();
+		   resource.setDocument(null);
+	   }
+	   return doc;
+   }
+
+   public Document doExecute(String input, String annotationType) throws Exception
+   {
+   		Document doc = doExecute(input);
+      FeatureMap features = doc.getFeatures();
+      Integer step = (Integer) features.get("lapps:step");
+      if (step == null) {
+         step = 1;
       }
+      features.put("lapps:step", step + 1);
+      features.put("lapps:" + annotationType, step + " " + getProducer() + " gate");
 
-//      Document doc = null;
-//      try
-//      {
-        Document doc = getDocument(input);
-//      }
-//      catch (InternalException e)
-//      {
-//         logger.error("Internal exception.", e);
-//         return new Data(Uri.ERROR, getStackTrace(e));
-//      }
-
-//      Data result = null;
-//      AbstractLanguageAnalyser resources = null;
-//      try
-//      {
-//         resources = pool.take();
-         for (AbstractLanguageAnalyser resource : resources)
-         {
-            logger.info("Executing resource {}", name);
-            resource.setDocument(doc);
-            resource.execute();
-//            FeatureMap features = doc.getFeatures();
-//            Object value = features.get(Metadata.PRODUCED_BY);
-//            String producedBy = name + ":" + Version.getVersion();
-//            if (value != null) {
-//               producedBy = value.toString() + ", " + producedBy;
-//            }
-//            doc.getFeatures().put(Metadata.PRODUCED_BY, producedBy);
-            resource.setDocument(null);
-         }
-//         String xml = doc.toXml();
-//         result = new Data(Uri.GATE, xml);
-//      }
-//      catch (Exception e)
-//      {
-//         logger.error("Error running GATE resources {}", name, e);
-//         return new Data(Uri.ERROR, getStackTrace(e));
-//      }
-//      finally
-//      {
-//         Factory.deleteResource(doc);
-//      }
       logger.info("Execution complete.");
       return doc;
    }
