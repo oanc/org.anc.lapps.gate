@@ -11,7 +11,7 @@ import org.lappsgrid.vocabulary.Contents;
 
 @ServiceMetadata(
 		  description = "GATE Part of Speech Tagger",
-        requires = {"http://vocab.lappsgrid.org/Token"},
+        requires = {"http://vocab.lappsgrid.org/Token","http://vocab.lappsgrid.org/Sentence"},
         produces = {"http://vocab.lappsgrid.org/Token#pos"}
 )
 public class Tagger extends SimpleGateService
