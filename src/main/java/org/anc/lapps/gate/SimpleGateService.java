@@ -30,7 +30,7 @@ import static org.lappsgrid.discriminator.Discriminators.Uri;
         vendor = "http://www.anc.org",
         encoding = "UTF-8",
         language = "en",
-        license = "apache2",
+        license = "GATE Embedded is released under the `LGPL 3.0 <http://www.gnu.org/licenses/lgpl-3.0.html>`_ license.\n\nGATE Embedded may be downloaded from the `GATE website <https://gate.ac.uk/download/>`_.",
         format = "gate"
 )
 public abstract class SimpleGateService implements WebService

@@ -1,4 +1,4 @@
-edoVERSION=$(shell cat VERSION)
+VERSION=$(shell cat VERSION)
 WAR=GateServices\#$(VERSION).war
 TGZ=GateServices-$(VERSION).tgz
 
