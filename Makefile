@@ -5,5 +5,5 @@ TGZ=GateServices-$(VERSION).tgz
 include ../master.mk
 
 docker:
-	cd src/main/Docker ; ./build.sh
+	cd src/main/Docker ; make
 	
