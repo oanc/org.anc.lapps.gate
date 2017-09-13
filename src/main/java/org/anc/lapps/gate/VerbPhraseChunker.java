@@ -13,7 +13,7 @@ import org.lappsgrid.vocabulary.Contents;
  */
 @ServiceMetadata(
         description = "GATE Verb Phrase Chunker",
-        requires = {"http://vocab.lappsgrid.org/Token","http://vocab.lappsgrid.org/Token#pos"},
+        requires = {"http://vocab.lappsgrid.org/Token","http://vocab.lappsgrid.org/Token#pos", "http://vocab.lappsgrid.org/Sentence"},
         produces = {"http://vocab.lappsgrid.org/VerbChunk"}
 )
 public class VerbPhraseChunker extends SimpleGateService

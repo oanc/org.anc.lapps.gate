@@ -13,7 +13,7 @@ import org.lappsgrid.vocabulary.Annotations;
  */
 @ServiceMetadata(
         description = "GATE Noun Phrase Chunker",
-        requires = {"http://vocab.lappsgrid.org/Token","http://vocab.lappsgrid.org/Token#pos"},
+        requires = {"http://vocab.lappsgrid.org/Token","http://vocab.lappsgrid.org/Token#pos", "http://vocab.lappsgrid.org/Sentence"},
         produces = {"http://vocab.lappsgrid.org/NounChunk"}
 )
 public class NounPhraseChunker extends SimpleGateService

@@ -17,12 +17,8 @@ import java.util.Iterator;
  */
 @ServiceMetadata(
 		description = "GATE Named Entity Recognizer",
-		requires = {"http://vocab.lappsgrid.org/Token"},
-		produces = {
-				"http://vocab.lappsgrid.org/Date",
-				"http://vocab.lappsgrid.org/Person",
-				"http://vocab.lappsgrid.org/Location",
-				"http://vocab.lappsgrid.org/Organization"}
+		requires = {"http://vocab.lappsgrid.org/Lookup"},
+		produces = {"http://vocab.lappsgrid.org/NamedEntity"}
 )
 public class NamedEntityRecognizer extends SimpleGateService
 {
