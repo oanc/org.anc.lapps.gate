@@ -230,7 +230,7 @@ public abstract class SimpleGateService implements WebService
    		return this.getClass().getName() + "_" + Version.getVersion();
    }
 
-   public Document doExecute(String input) throws Exception
+   public Document doExecute(String input, FeatureMap features) throws Exception
    {
 	   logger.debug("Executing {}", name);
 	   if (savedException != null)
@@ -244,16 +244,23 @@ public abstract class SimpleGateService implements WebService
 	   {
 		   logger.info("Executing resource {}", name);
 		   resource.setDocument(doc);
+		   resource.setFeatures(features);
 		   resource.execute();
 		   resource.setDocument(null);
+		   resource.setFeatures(null);
 	   }
 	   return doc;
    }
 
    public Document doExecute(String input, String annotationType) throws Exception
    {
-   		Document doc = doExecute(input);
-      FeatureMap features = doc.getFeatures();
+      return doExecute(input, annotationType, null);
+   }
+
+   public Document doExecute(String input, String annotationType, FeatureMap features) throws Exception
+   {
+      Document doc = doExecute(input, features);
+      features = doc.getFeatures();
       Integer step = (Integer) features.get("lapps:step");
       if (step == null) {
          step = 1;
