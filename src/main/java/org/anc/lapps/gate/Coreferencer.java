@@ -12,7 +12,7 @@ import org.lappsgrid.discriminator.Discriminators;
  */
 @ServiceMetadata(
         description = "Coreferencer from GATE",
-        requires = { "person"},
+        requires = { "http://vocab.lappsgrid.org/NamedEntity"},
         produces = { "http://vocab.lappsgrid.org/NamedEntity#matches" }
 )
 public class Coreferencer extends SimpleGateService

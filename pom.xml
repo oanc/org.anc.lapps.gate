@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.anc.lapps</groupId>
     <artifactId>gate</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0-SNAPSHOT</version>
     <name>Services: GATE</name>
     <description>GATE processing resources wrapped as LAPPS services.</description>
     <packaging>war</packaging>
     <parent>
         <groupId>org.lappsgrid.maven</groupId>
         <artifactId>war-parent-pom</artifactId>
-        <version>2.0.5</version>
+        <version>2.1.0</version>
     </parent>
     <scm>
         <connection>https://github.com/oanc/org.anc.lapps.gate.git</connection>
@@ -21,7 +21,6 @@
         <java.version>1.8</java.version>
         <gate.version>8.3</gate.version>
         <anc.commons.version>3.6.0</anc.commons.version>
-        <lapps.version>2.3.3</lapps.version>
     </properties>
     <build>
         <finalName>GateServices#${project.version}</finalName>
@@ -119,8 +118,33 @@
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
-            <artifactId>all</artifactId>
-            <version>${lapps.version}</version>
+            <artifactId>api</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>metadata</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>annotations</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>serialization</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>core</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lappsgrid</groupId>
+            <artifactId>vocabulary</artifactId>
+            <version>2.3.2</version>
         </dependency>
     </dependencies>
 </project>

@@ -17,12 +17,8 @@ import java.util.Iterator;
  */
 @ServiceMetadata(
 		description = "GATE Named Entity Recognizer",
-		requires = {"http://vocab.lappsgrid.org/Token"},
-		produces = {
-				"http://vocab.lappsgrid.org/Date",
-				"http://vocab.lappsgrid.org/Person",
-				"http://vocab.lappsgrid.org/Location",
-				"http://vocab.lappsgrid.org/Organization"}
+		requires = {"http://vocab.lappsgrid.org/Lookup"},
+		produces = {"http://vocab.lappsgrid.org/NamedEntity"}
 )
 public class NamedEntityRecognizer extends SimpleGateService
 {
@@ -86,17 +82,20 @@ public class NamedEntityRecognizer extends SimpleGateService
 
 		// TODO The Annotations class has changed and the feature values added should be rolled
 		// back to what they were originally.
-		if (hasLocation)
-		{
-			features.put("lapps:" + Discriminators.Uri.LOCATION, step + " " + producer + " gate");
-		}
-		if (hasPerson)
-		{
-			features.put("lapps:" + Discriminators.Uri.PERSON, step + " " + producer + " gate");
-		}
-		if (hasOrganization)
-		{
-			features.put("lapps:" + Discriminators.Uri.ORGANIZATION, step + " " + producer + " gate");
+//		if (hasLocation)
+//		{
+//			features.put("lapps:" + Discriminators.Uri.LOCATION, step + " " + producer + " gate");
+//		}
+//		if (hasPerson)
+//		{
+//			features.put("lapps:" + Discriminators.Uri.PERSON, step + " " + producer + " gate");
+//		}
+//		if (hasOrganization)
+//		{
+//			features.put("lapps:" + Discriminators.Uri.ORGANIZATION, step + " " + producer + " gate");
+//		}
+		if (hasLocation || hasPerson || hasOrganization) {
+			features.put("lapps:" + Discriminators.Uri.NE, step + " " + producer + " gate");
 		}
 		String result = DataFactory.gateDocument(document.toXml());
 		Factory.deleteResource(document);
