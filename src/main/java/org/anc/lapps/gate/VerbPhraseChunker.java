@@ -2,18 +2,15 @@ package org.anc.lapps.gate;
 
 import gate.Document;
 import gate.Factory;
-import gate.FeatureMap;
-import org.lappsgrid.core.DataFactory;
 import org.lappsgrid.annotations.ServiceMetadata;
-import org.lappsgrid.vocabulary.Annotations;
-import org.lappsgrid.vocabulary.Contents;
+import org.lappsgrid.core.DataFactory;
 
 /**
  * @author Keith Suderman
  */
 @ServiceMetadata(
         description = "GATE Verb Phrase Chunker",
-        requires = {"http://vocab.lappsgrid.org/Token","http://vocab.lappsgrid.org/Token#pos"},
+        requires = {"http://vocab.lappsgrid.org/Token","http://vocab.lappsgrid.org/Token#pos", "http://vocab.lappsgrid.org/Sentence"},
         produces = {"http://vocab.lappsgrid.org/VerbChunk"}
 )
 public class VerbPhraseChunker extends SimpleGateService
