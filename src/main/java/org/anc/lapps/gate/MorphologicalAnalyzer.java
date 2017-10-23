@@ -28,7 +28,7 @@ import static org.lappsgrid.discriminator.Discriminators.Uri;
  */
 @ServiceMetadata(
 		description = "GATE Morphological Analyser",
-		requires = { "http://vocab.lappsgrid.org/Token","http://vocab.lappsgrid.org/Token#pos", "http://vocab.lappsgrid.org/Sentence"},
+		requires = { "http://vocab.lappsgrid.org/Token"}, //"http://vocab.lappsgrid.org/Token#pos", "http://vocab.lappsgrid.org/Sentence"},
 		produces = "http://vocab.lappsgrid.org/Token#lemma"
 )
 

@@ -5,7 +5,7 @@ SERVER=http://downloads.lappsgrid.org
 #SERVER=http://www.anc.org/downloads/docker
 
 PLUGINS=gate-plugins-2.1.0.tgz
-WAR=GateServices-$(VERSION).tgz
+WAR=GateServices-$(VERSION).war
 CONV=GateConverter_2.1.0.tgz
 
 image: download
@@ -13,7 +13,6 @@ image: download
 
 download:
 	if [ ! -e $(PLUGINS) ] ; then wget $(SERVER)/$(PLUGINS) ; fi
-	if [ ! -e $(WAR) ] ; then wget $(SERVER)/$(WAR) ; fi
 	if [ ! -e $(CONV) ] ; then wget $(SERVER)/$(CONV) ; fi
 
 latest: download

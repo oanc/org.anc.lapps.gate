@@ -1,25 +1,31 @@
 package org.anc.lapps.gate;
 
-import gate.*;
+import gate.Document;
+import gate.Factory;
+import gate.FeatureMap;
+import gate.Gate;
+import gate.Utils;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ResourceInstantiationException;
 import org.anc.io.UTF8Reader;
+import org.lappsgrid.annotations.CommonMetadata;
 import org.lappsgrid.api.InternalException;
 import org.lappsgrid.api.WebService;
 import org.lappsgrid.core.DataFactory;
-import org.lappsgrid.discriminator.Discriminators;
-import org.lappsgrid.annotations.CommonMetadata;
 import org.lappsgrid.metadata.ServiceMetadata;
 import org.lappsgrid.serialization.Data;
 import org.lappsgrid.serialization.DataContainer;
 import org.lappsgrid.serialization.Serializer;
 import org.lappsgrid.serialization.lif.Container;
-import org.lappsgrid.vocabulary.Annotations;
-import org.lappsgrid.vocabulary.Contents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import static org.lappsgrid.discriminator.Discriminators.Uri;
 
@@ -255,6 +261,11 @@ public abstract class SimpleGateService implements WebService
    public Document doExecute(String input, String annotationType) throws Exception
    {
       return doExecute(input, annotationType, null);
+   }
+
+   public Document doExecute(String input) throws Exception
+   {
+      return doExecute(input, (FeatureMap) null);
    }
 
    public Document doExecute(String input, String annotationType, FeatureMap features) throws Exception
