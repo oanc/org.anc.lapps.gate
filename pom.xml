@@ -71,7 +71,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <!-- <version>4.11</version> -->
             <!--
                 GATE bug: Coreference has a runtime dependency on Junit. Fixed in
                 new versions of GATE.

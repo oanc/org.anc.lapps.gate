@@ -6,7 +6,7 @@ SERVER=http://downloads.lappsgrid.org
 
 PLUGINS=gate-plugins-2.1.0.tgz
 WAR=GateServices-$(VERSION).war
-CONV=GateConverter_2.1.0.tgz
+CONV=GateConverter_2.1.0-SNAPSHOT.tgz
 
 image: download
 	docker build --build-arg VERSION=$(VERSION) -t $(IMAGE) .
