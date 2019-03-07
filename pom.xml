@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.anc.lapps</groupId>
     <artifactId>gate</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>2.3.0</version>
     <name>Services: GATE</name>
     <description>GATE processing resources wrapped as LAPPS services.</description>
     <packaging>war</packaging>
     <parent>
         <groupId>org.lappsgrid.maven</groupId>
         <artifactId>war-parent-pom</artifactId>
-        <version>2.1.0</version>
+        <version>2.2.1-SNAPSHOT</version>
     </parent>
     <scm>
         <connection>https://github.com/oanc/org.anc.lapps.gate.git</connection>
@@ -63,20 +63,22 @@
         </plugins>
     </build>
     <dependencies>
+        <!--
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>2.4.3</version>
         </dependency>
+        -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <!-- <version>4.11</version> -->
+            <version>4.12</version>
             <!--
                 GATE bug: Coreference has a runtime dependency on Junit. Fixed in
                 new versions of GATE.
             -->
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>uk.ac.gate</groupId>
@@ -119,48 +121,46 @@
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>api</artifactId>
-            <version>2.0.1</version>
+            <version>${lapps.api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>metadata</artifactId>
-            <version>1.2.0</version>
+            <version>${lapps.metadata.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>annotations</artifactId>
-            <version>1.2.0</version>
+            <version>${lapps.annoations.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>serialization</artifactId>
-            <version>2.5.0</version>
+            <version>${lapps.serialization.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>core</artifactId>
-            <version>2.0.4</version>
+            <version>${lapps.core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>vocabulary</artifactId>
-            <version>2.3.2</version>
+            <version>${lapps.vocabulary.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lappsgrid</groupId>
             <artifactId>client</artifactId>
-            <version>2.0.4</version>
+            <version>${lapps.client.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.9.1</version>
         </dependency>
     </dependencies>
 </project>

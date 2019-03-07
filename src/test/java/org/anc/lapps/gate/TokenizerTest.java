@@ -59,6 +59,7 @@ public class TokenizerTest
 	@Test
 	public void testText() {
 		Data<String> data = new Data<>(Uri.TEXT, sentence);
+
 		String json = tokenizer.execute(data.asJson());
 		assertNotNull(json);
 

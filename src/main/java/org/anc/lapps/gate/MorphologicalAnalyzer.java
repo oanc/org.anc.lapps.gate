@@ -46,13 +46,14 @@ public class MorphologicalAnalyzer extends SimpleGateService
 		Document document = null;
 		try
 		{
+			// What is rootFeatureName?
 			FeatureMap features = Factory.newFeatureMap();
 			features.put("rootFeatureName", "lemma");
-			document = doExecute(input, Uri.TOKEN, features);
+			document = doExecute(input, Uri.LEMMA, features);
 		}
 		catch (Exception e)
 		{
-			return DataFactory.error("Unable to execute the Tokenizer.", e);
+			return DataFactory.error("Unable to execute the MorphologicalAnalyzer.", e);
 		}
 		if (document == null)
 		{

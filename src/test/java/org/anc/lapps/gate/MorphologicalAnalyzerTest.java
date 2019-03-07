@@ -55,7 +55,7 @@ public class MorphologicalAnalyzerTest
 		String json = service.execute(data.asJson());
 
 		data = Serializer.parse(json);
-		//System.out.println(data.getPayload());
+		System.out.println(data.getPayload());
 
 		Document document = Factory.newDocument(data.getPayload().toString());
 		Object feature = document.getFeatures().get("lapps:" + Discriminators.Uri.LEMMA);

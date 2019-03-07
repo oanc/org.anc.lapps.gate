@@ -36,7 +36,8 @@ import static org.lappsgrid.discriminator.Discriminators.Uri;
         vendor = "http://www.anc.org",
         encoding = "UTF-8",
         language = "en",
-        license = "GATE Embedded is released under the `LGPL 3.0 <http://www.gnu.org/licenses/lgpl-3.0.html>`_ license.\n\nGATE Embedded may be downloaded from the `GATE website <https://gate.ac.uk/download/>`_.",
+        license = "lgpl3",
+        licenseDesc = "GATE Embedded is released under the `LGPL 3.0 <http://www.gnu.org/licenses/lgpl-3.0.html>`_ license.\n\nGATE Embedded may be downloaded from the `GATE website <https://gate.ac.uk/download/>`_.",
         format = "gate"
 )
 public abstract class SimpleGateService implements WebService
@@ -268,16 +269,16 @@ public abstract class SimpleGateService implements WebService
       return doExecute(input, (FeatureMap) null);
    }
 
-   public Document doExecute(String input, String annotationType, FeatureMap features) throws Exception
+   public Document doExecute(String input, String annotationType, final FeatureMap features) throws Exception
    {
       Document doc = doExecute(input, features);
-      features = doc.getFeatures();
-      Integer step = (Integer) features.get("lapps:step");
+      FeatureMap docFeatures = doc.getFeatures();
+      Integer step = (Integer) docFeatures.get("lapps:step");
       if (step == null) {
          step = 1;
       }
-      features.put("lapps:step", step + 1);
-      features.put("lapps:" + annotationType, step + " " + getProducer() + " gate");
+      docFeatures.put("lapps:step", step + 1);
+      docFeatures.put("lapps:" + annotationType, step + " " + getProducer() + " gate");
 
       logger.info("Execution complete.");
       return doc;
